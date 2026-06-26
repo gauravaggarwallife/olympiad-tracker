@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olympiad Tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#0f1117;--surface1:#1a1d27;--surface2:#22263a;
+  --border:#2e3350;--border-strong:#3d4468;
+  --text:#e8eaf6;--text2:#9ba3c2;--text3:#5c6490;
+  --accent:#6c8ef5;--accent-bg:rgba(108,142,245,.12);--accent-border:rgba(108,142,245,.35);
+  --success:#4ade80;--success-bg:rgba(74,222,128,.1);--success-border:rgba(74,222,128,.3);
+  --warning:#fbbf24;--warning-bg:rgba(251,191,36,.1);--warning-border:rgba(251,191,36,.3);
+  --danger:#f87171;--danger-bg:rgba(248,113,113,.1);--danger-border:rgba(248,113,113,.3);
+  --muted:#3d4468;--radius:8px;--wa:#25D366;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+.container{max-width:860px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:10px}
+.title{font-size:22px;font-weight:600;display:flex;align-items:center;gap:8px}
+.sub{font-size:12px;color:var(--text3);margin-top:3px}
+.gbar{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:1.1rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gstatus{font-size:12px;color:var(--text2);flex:1;min-width:200px}
+.gstatus.ok{color:var(--success)}
+.gstatus.err{color:var(--danger)}
+.gstatus.warn{color:var(--warning)}
+.btn{border:none;border-radius:var(--radius);padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-accent{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
+.btn-accent:hover:not(:disabled){opacity:.8}
+.btn-success{background:var(--success-bg);color:var(--success);border:1px solid var(--success-border)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border-strong)}
+.btn-ghost:hover{background:var(--surface2)}
+.spinner{width:14px;height:14px;border:2px solid var(--border-strong);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.1rem}
+.stat{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem}
+.slbl{font-size:11px;color:var(--text3);margin-bottom:3px}
+.sval{font-size:22px;font-weight:600}
+.form-card{background:var(--surface1);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.1rem}
+.form-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.form-body{display:none}
+.form-body.open{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:540px){.g2{grid-template-columns:1fr}}
+.g1{margin-bottom:10px}
+.fld label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px}
+.fld label span{color:var(--text3);font-weight:400}
+.fld input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:13px;color:var(--text);outline:none}
+.fld input:focus{border-color:var(--accent)}
+.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.hint{font-size:11px;color:var(--text3);flex:1;min-width:100px}
+.pending-banner{background:var(--warning-bg);border:1px solid var(--warning-border);border-radius:var(--radius);padding:.65rem 1rem;margin-bottom:1rem;font-size:12px;color:var(--warning);display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.pending-banner.show{display:flex}
+.tabs{display:flex;gap:0;margin-bottom:.85rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:fit-content;flex-wrap:wrap}
+.tab{font-size:12px;padding:7px 14px;cursor:pointer;background:transparent;border:none;color:var(--text2);border-right:1px solid var(--border);transition:background .15s}
+.tab:last-child{border-right:none}
+.tab.active{background:var(--surface2);color:var(--text);font-weight:500}
+.src-filter{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.pill{font-size:11px;padding:5px 13px;border-radius:20px;border:1px solid var(--border-strong);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s}
+.pill.active{background:var(--accent-bg);color:var(--accent);border-color:var(--accent-border)}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin:.75rem 0 .5rem;display:flex;align-items:center;gap:5px}
+.cards{display:flex;flex-direction:column;gap:8px;margin-bottom:.9rem}
+.card{background:var(--surface1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s}
+.card.reg{border-color:var(--success-border);border-left:3px solid var(--success)}
+.card.urgent{border-left:3px solid var(--danger);border-radius:0 12px 12px 0}
+.card.regwarn{border-left:3px solid var(--warning);border-radius:0 12px 12px 0}
+.card.past{opacity:.45}
+.card.nodates{border-left:3px solid var(--muted);border-radius:0 12px 12px 0}
+.ico{width:38px;height:38px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:1px}
+.cbody{flex:1;min-width:0}
+.cname{font-size:14px;font-weight:600;color:var(--text);word-break:break-word;line-height:1.3}
+.src-tag{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:5px;font-weight:500;vertical-align:middle;background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.crow{font-size:11px;color:var(--text2);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.crow a{color:var(--accent);text-decoration:none}
+.crow a:hover{text-decoration:underline}
+.crow.missing{color:var(--text3);font-style:italic}
+.ctags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.divrow{border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;gap:5px;flex-wrap:wrap}
+.act{font-size:11px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border-strong);background:transparent;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;line-height:1.3;white-space:nowrap;transition:all .15s}
+.act:hover{background:var(--surface2)}
+.act.green{border-color:var(--success-border);color:var(--success)}
+.act.green:hover{background:var(--success-bg)}
+.act.wa{border-color:var(--wa);color:var(--wa)}
+.act.wa:hover{background:rgba(37,211,102,.08)}
+.act.gcal{border-color:#4285F4;color:#6ea8fe}
+.act.gcal:hover{background:rgba(66,133,244,.1)}
+.act.accent{border-color:var(--accent-border);color:var(--accent)}
+.iform{background:var(--surface2);border-radius:var(--radius);padding:.75rem;margin-top:8px;display:none;border:1px solid var(--border)}
+.iform.open{display:block}
+.ifrow{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.ifrow .fld{flex:1;min-width:130px}
+.cright{text-align:right;flex-shrink:0;min-width:58px}
+.cd{font-size:20px;font-weight:700}
+.cdlbl{font-size:11px;color:var(--text3)}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;margin-top:5px;display:inline-block;font-weight:500}
+.del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:3px;opacity:.5;margin-top:1px;flex-shrink:0;border-radius:4px}
+.del:hover{opacity:1;color:var(--danger)}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:13px}
+.loading-wrap{text-align:center;padding:3rem 1rem;display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--text2);font-size:13px}
+.sheet-link{font-size:11px;color:var(--text3);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.sheet-link:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hdr">
+    <div>
+      <div class="title">🏅 Olympiad Tracker</div>
+      <div class="sub">
+        <i class="ti ti-brand-google-drive" style="color:#0F9D58;font-size:12px;vertical-align:-1px;margin-right:3px"></i>
+        gauravaggarwal1@gmail.com &nbsp;·&nbsp;
+        <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1i8ALM-aKar6K0917qCyrdtX9OeZfc_WPGJlOxHVm0eg/edit" target="_blank">
+          <i class="ti ti-table" style="font-size:11px"></i> Open Sheet
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="gbar">
+    <i class="ti ti-table" style="font-size:18px;color:#0F9D58;flex-shrink:0"></i>
+    <div class="gstatus" id="gstatus">Loading from Google Sheets…</div>
+    <button class="btn btn-accent" id="btn-refresh" onclick="loadSheet()">
+      <i class="ti ti-refresh" style="font-size:13px"></i> Refresh
+    </button>
+  </div>
+
+  <div class="pending-banner" id="pending-banner">
+    <i class="ti ti-clock" style="font-size:14px;flex-shrink:0"></i>
+    <span id="pending-text"></span>
+    <span style="margin-left:auto;opacity:.8">→ Tell Claude to save these changes to the Sheet</span>
+  </div>
+
+  <div class="stats" id="stats" style="display:none"></div>
+
+  <div class="form-card">
+    <div class="form-title" onclick="toggleAddForm()">
+      <i class="ti ti-plus" style="font-size:15px"></i> Add new olympiad
+      <span style="font-size:11px;color:var(--text3);font-weight:400;margin-left:4px">(tell Claude to save to Sheet after)</span>
+      <i class="ti ti-chevron-down" id="form-chevron" style="font-size:13px;margin-left:auto;color:var(--text3)"></i>
+    </div>
+    <div class="form-body" id="form-body">
+      <div class="g2">
+        <div class="fld"><label>Olympiad name</label><input type="text" id="f-name" placeholder="e.g. SOF IMO 2025-26"></div>
+        <div class="fld"><label>Email <span>(optional)</span></label><input type="email" id="f-email" value="advayexam@gmail.com"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>Registration deadline <span>(optional)</span></label><input type="date" id="f-regdate"></div>
+        <div class="fld"><label>Exam date <span>(optional)</span></label><input type="date" id="f-examdate"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>Registration link <span>(optional)</span></label><input type="url" id="f-reglink" placeholder="https://..."></div>
+        <div class="fld"><label>Roll / reg number <span>(optional)</span></label><input type="text" id="f-roll" placeholder="e.g. SOF-IMO-78423"></div>
+      </div>
+      <div class="g1">
+        <div class="fld"><label>Exam / admit card link <span>(optional)</span></label><input type="url" id="f-examlink" placeholder="https://..."></div>
+      </div>
+      <div class="frow">
+        <span class="hint">Only the name is required.</span>
+        <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+        <button class="btn btn-accent" onclick="addEntry()"><i class="ti ti-plus" style="font-size:12px"></i> Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('all',this)">All</button>
+    <button class="tab" onclick="setTab('reg',this)"><i class="ti ti-circle-check" style="font-size:12px;vertical-align:-1px;margin-right:2px"></i>Registered</button>
+    <button class="tab" onclick="setTab('open',this)">Reg open</button>
+    <button class="tab" onclick="setTab('nodates',this)">Dates pending</button>
+    <button class="tab" onclick="setTab('past',this)">Past</button>
+  </div>
+
+  <div class="src-filter">
+    <button class="pill active" onclick="setSrc('all',this)">All</button>
+    <button class="pill" onclick="setSrc('GOA',this)">Global Olympiads Academy</button>
+    <button class="pill" onclick="setSrc('OI',this)">Olympiad India</button>
+    <button class="pill" onclick="setSrc('IOA',this)">Int'l Olympiad Academy</button>
+    <button class="pill" onclick="setSrc('manual',this)">Added by me</button>
+  </div>
+
+  <div id="list">
+    <div class="loading-wrap">
+      <div class="spinner" style="width:24px;height:24px;border-width:3px"></div>
+      Loading from Google Sheets…
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SHEET_ID='1i8ALM-aKar6K0917qCyrdtX9OeZfc_WPGJlOxHVm0eg';
+
+let data=[];
+let pendingChanges=[];
+let nextId=37;
+let openFormId=null;
+let openFormType=null;
+let activeTab='all';
+let activeSrc='all';
+let addFormOpen=false;
+
+function setStatus(msg,type=''){
+  const el=document.getElementById('gstatus');
+  el.innerHTML=msg;
+  el.className='gstatus'+(type?' '+type:'');
+}
+
+function parseCSV(text){
+  const lines=text.trim().split(/\r?\n/);
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    const cols=[];let cur='';let inQ=false;
+    for(const ch of lines[i]){
+      if(ch==='"'){inQ=!inQ;}
+      else if(ch===','&&!inQ){cols.push(cur.trim());cur='';}
+      else cur+=ch;
+    }
+    cols.push(cur.trim());
+    if(cols.length>=9&&cols[0]){
+      const parseDMY=s=>{
+        if(!s||!s.trim())return'';
+        const m=s.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if(m)return`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+        if(s.match(/^\d{4}-\d{2}-\d{2}$/))return s;
+        return'';
+      };
+      rows.push({
+        id:parseInt(cols[0])||rows.length+1,
+        name:cols[1]||'',email:cols[2]||'',
+        regdate:parseDMY(cols[3]),examdate:parseDMY(cols[4]),
+        reglink:cols[5]||'',examlink:cols[6]||'',roll:cols[7]||'',
+        registered:(cols[8]||'').toUpperCase()==='TRUE',
+        src:(cols[9]||'manual').trim()
+      });
+    }
+  }
+  return rows;
+}
+
+async function loadSheet(){
+  document.getElementById('btn-refresh').disabled=true;
+  setStatus('<span style="display:inline-flex;align-items:center;gap:6px"><span class="spinner"></span>Fetching from Google Sheets…</span>');
+  document.getElementById('stats').style.display='none';
+  try{
+    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&t=${Date.now()}`;
+    const res=await fetch(url);
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    if(text.includes('<!DOCTYPE')||text.includes('<html')){
+      setStatus('<i class="ti ti-lock" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Sheet is not public. Open the Sheet → Share → Anyone with the link → Viewer → Done','err');
+      document.getElementById('list').innerHTML='<div class="empty"><i class="ti ti-lock" style="font-size:30px;display:block;margin-bottom:10px"></i>Sheet not publicly accessible.<br><span style="font-size:12px;margin-top:6px;display:block">Open the Sheet, click Share → Change to anyone with the link → Viewer → Done</span></div>';
+    }else{
+      data=parseCSV(text);
+      if(data.length===0)throw new Error('Empty');
+      nextId=Math.max(...data.map(x=>x.id))+1;
+      pendingChanges=[];
+      updatePendingBanner();
+      const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+      setStatus(`<i class="ti ti-circle-check" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Loaded ${data.length} olympiads · ${t}`,'ok');
+      document.getElementById('stats').style.display='grid';
+      render();
+    }
+  }catch(e){
+    setStatus('<i class="ti ti-wifi-off" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Could not load Sheet. Check internet connection.','err');
+    document.getElementById('list').innerHTML='<div class="empty"><i class="ti ti-wifi-off" style="font-size:30px;display:block;margin-bottom:10px"></i>Could not reach Google Sheets.<br><span style="font-size:12px;margin-top:6px;display:block">Check your connection and try Refresh.</span></div>';
+  }
+  document.getElementById('btn-refresh').disabled=false;
+}
+
+function updatePendingBanner(){
+  const b=document.getElementById('pending-banner');
+  if(!pendingChanges.length){b.classList.remove('show');return;}
+  b.classList.add('show');
+  document.getElementById('pending-text').textContent=`${pendingChanges.length} unsaved change${pendingChanges.length>1?'s':''} — local only until Claude updates the Sheet`;
+}
+
+function recordChange(item,type){
+  pendingChanges=pendingChanges.filter(c=>!(c.id===item.id&&c.type===type));
+  pendingChanges.push({id:item.id,type,name:item.name,data:{...item}});
+  updatePendingBanner();
+}
+
+const today=new Date();today.setHours(0,0,0,0);
+function days(s){if(!s)return null;const d=new Date(s);d.setHours(0,0,0,0);return Math.round((d-today)/86400000);}
+function fmt(s){if(!s)return null;return new Date(s).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function gcalDt(s){return s?s.replace(/-/g,''):''}
+function nextDay(s){const d=new Date(s);d.setDate(d.getDate()+1);return d.toISOString().split('T')[0].replace(/-/g,'');}
+
+function gcalLink(item,type){
+  const isExam=type==='exam';const dv=isExam?item.examdate:item.regdate;if(!dv)return null;
+  const title=encodeURIComponent((isExam?'Exam: ':'Reg deadline: ')+item.name);
+  const det=encodeURIComponent([item.email?'Email: '+item.email:'',item.roll?'Roll: '+item.roll:'',item.reglink?'Reg: '+item.reglink:'',item.examlink?'Exam link: '+item.examlink:''].filter(Boolean).join('\n'));
+  return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${gcalDt(dv)}/${nextDay(dv)}&details=${det}`;
+}
+function waLink(item,type){
+  const isExam=type==='exam';const dv=isExam?item.examdate:item.regdate;
+  const lines=[`*${item.name}*`,dv?(isExam?'Exam: ':'Reg deadline: ')+fmt(dv):'',item.email?'Email: '+item.email:'',item.roll?'Roll: '+item.roll:'',!isExam&&item.reglink?'Register: '+item.reglink:'',isExam&&item.examlink?'Exam link: '+item.examlink:''].filter(Boolean);
+  return'https://wa.me/?text='+encodeURIComponent(lines.join('\n'));
+}
+
+const SRC_LABEL={GOA:'GOA',OI:'OI',IOA:'IOA',manual:'mine'};
+
+function cardStyle(item){
+  if(!item.examdate&&!item.regdate)return'nodates';
+  if(item.registered)return'reg';
+  const ed=days(item.examdate);
+  if(ed!==null&&ed<0)return'past';
+  if(ed!==null&&ed<=14)return'urgent';
+  const rd=days(item.regdate);
+  if(rd!==null&&rd>=0&&rd<=7)return'regwarn';
+  return'';
+}
+
+function cardHTML(item){
+  const cs=cardStyle(item);const ed=days(item.examdate);const rd=days(item.regdate);
+  const isPending=pendingChanges.some(c=>c.id===item.id);
+  const cdTxt=ed===null?'—':ed<0?'Done':ed===0?'Today!':ed+'d';
+  const cdColor=ed===null?'var(--text3)':ed<0?'var(--text3)':ed<=14?'var(--danger)':'var(--accent)';
+  const badge=item.registered
+    ?`<span class="badge" style="background:var(--success-bg);color:var(--success);border:1px solid var(--success-border)"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px"></i> Registered</span>`
+    :rd===null?`<span class="badge" style="background:var(--surface2);color:var(--text3)">No reg date</span>`
+    :rd<0?`<span class="badge" style="background:var(--surface2);color:var(--text3)">Reg closed</span>`
+    :rd<=7?`<span class="badge" style="background:var(--warning-bg);color:var(--warning);border:1px solid var(--warning-border)">Closes ${rd===0?'today':rd+'d'}</span>`
+    :`<span class="badge" style="background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)">Reg open</span>`;
+  const tags=[];
+  if(cs==='urgent'&&ed!==null&&ed>=0)tags.push(`<span class="tag" style="background:var(--danger-bg);color:var(--danger)">Exam soon</span>`);
+  if(cs==='regwarn')tags.push(`<span class="tag" style="background:var(--warning-bg);color:var(--warning)">Reg closing</span>`);
+  if(cs==='nodates')tags.push(`<span class="tag" style="background:var(--surface2);color:var(--text3)">Dates pending</span>`);
+  if(isPending)tags.push(`<span class="tag" style="background:var(--warning-bg);color:var(--warning)">⏳ Not saved yet</span>`);
+  const regRow=item.regdate
+    ?`<div class="crow"><i class="ti ti-calendar" style="font-size:11px;flex-shrink:0"></i> Reg deadline: <strong>${fmt(item.regdate)}</strong>${item.reglink?` · <a href="${item.reglink}" target="_blank">Register ↗</a>`:''}</div>`
+    :`<div class="crow missing"><i class="ti ti-calendar" style="font-size:11px;flex-shrink:0"></i> Reg deadline: not set${item.reglink?` · <a href="${item.reglink}" target="_blank" style="font-style:normal">Register ↗</a>`:''}</div>`;
+  const examRow=item.examdate
+    ?`<div class="crow"><i class="ti ti-calendar-event" style="font-size:11px;flex-shrink:0"></i> Exam: <strong>${fmt(item.examdate)}</strong>${item.examlink?` · <a href="${item.examlink}" target="_blank">Exam link ↗</a>`:''}</div>`
+    :`<div class="crow missing"><i class="ti ti-calendar-event" style="font-size:11px;flex-shrink:0"></i> Exam date: not set${item.examlink?` · <a href="${item.examlink}" target="_blank" style="font-style:normal">Exam link ↗</a>`:''}</div>`;
+  const srcLabel=SRC_LABEL[item.src]||item.src;
+  const markRegBtn=!item.registered?`<button class="act green" onclick="markReg(${item.id})"><i class="ti ti-circle-check" style="font-size:11px"></i> Mark registered</button>`:'';
+  const datesBtn=`<button class="act" onclick="openInline(${item.id},'dates')"><i class="ti ti-calendar-plus" style="font-size:11px"></i> ${!item.regdate&&!item.examdate?'Add dates':'Edit dates'}</button>`;
+  const examLinkBtn=`<button class="act${item.examlink?' accent':''}" onclick="openInline(${item.id},'exam')"><i class="ti ti-link" style="font-size:11px"></i> ${item.examlink?'Update exam link':'Add exam link'}</button>`;
+  const gcalR=item.regdate?`<a href="${gcalLink(item,'reg')}" target="_blank" class="act gcal"><i class="ti ti-calendar-plus" style="font-size:12px"></i> Reg to calendar</a>`:'';
+  const gcalE=item.examdate?`<a href="${gcalLink(item,'exam')}" target="_blank" class="act gcal"><i class="ti ti-calendar-plus" style="font-size:12px"></i> Exam to calendar</a>`:'';
+  const waR=`<a href="${waLink(item,'reg')}" target="_blank" class="act wa"><i class="ti ti-brand-whatsapp" style="font-size:12px"></i> Reg reminder</a>`;
+  const waE=`<a href="${waLink(item,'exam')}" target="_blank" class="act wa"><i class="ti ti-brand-whatsapp" style="font-size:12px"></i> Exam reminder</a>`;
+  const datesForm=`<div class="iform${openFormId===item.id&&openFormType==='dates'?' open':''}" id="ef-dates-${item.id}">
+    <div class="ifrow">
+      <div class="fld"><label>Registration deadline</label><input type="date" id="el-rd-${item.id}" value="${item.regdate||''}"></div>
+      <div class="fld"><label>Exam date</label><input type="date" id="el-ed-${item.id}" value="${item.examdate||''}"></div>
+      <button class="btn btn-accent" style="padding:7px 12px;font-size:12px" onclick="saveDates(${item.id})">Save</button>
+      <button class="btn btn-ghost" style="padding:7px 10px;font-size:12px" onclick="closeInline()">Cancel</button>
+    </div>
+  </div>`;
+  const examForm=`<div class="iform${openFormId===item.id&&openFormType==='exam'?' open':''}" id="ef-exam-${item.id}">
+    <div class="ifrow">
+      <div class="fld"><label>Exam / admit card link</label><input type="url" id="el-el-${item.id}" placeholder="https://..." value="${item.examlink||''}"></div>
+      <button class="btn btn-accent" style="padding:7px 12px;font-size:12px" onclick="saveExamLink(${item.id})">Save</button>
+      <button class="btn btn-ghost" style="padding:7px 10px;font-size:12px" onclick="closeInline()">Cancel</button>
+    </div>
+  </div>`;
+  return`<div class="card ${cs}" id="card-${item.id}">
+    <div class="ico">🏅</div>
+    <div class="cbody">
+      <div class="cname">${item.name}<span class="src-tag">${srcLabel}</span></div>
+      ${item.email?`<div class="crow"><i class="ti ti-mail" style="font-size:11px;flex-shrink:0"></i> ${item.email}</div>`:''}
+      ${item.roll?`<div class="crow"><i class="ti ti-id" style="font-size:11px;flex-shrink:0"></i> ${item.roll}</div>`:''}
+      ${regRow}${examRow}
+      ${tags.length?`<div class="ctags">${tags.join('')}</div>`:''}
+      <div class="divrow">${markRegBtn}${datesBtn}${examLinkBtn}</div>
+      <div class="divrow">${waR}${waE}</div>
+      ${gcalR||gcalE?`<div class="divrow">${gcalR}${gcalE}</div>`:''}
+      ${datesForm}${examForm}
+    </div>
+    <div class="cright">
+      <div class="cd" style="color:${cdColor}">${cdTxt}</div>
+      <div class="cdlbl">${ed!==null&&ed>0?'to exam':''}</div>
+      ${badge}
+    </div>
+    <button class="del" onclick="del(${item.id})" title="Delete"><i class="ti ti-trash"></i></button>
+  </div>`;
+}
+
+function render(){
+  renderStats();
+  const el=document.getElementById('list');
+  let items=[...data];
+  if(activeSrc!=='all') items=items.filter(d=>d.src===activeSrc);
+  if(activeTab==='reg') items=items.filter(d=>d.registered);
+  else if(activeTab==='open') items=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0&&(!d.examdate||days(d.examdate)>=0));
+  else if(activeTab==='nodates') items=items.filter(d=>!d.examdate&&!d.regdate);
+  else if(activeTab==='past') items=items.filter(d=>d.examdate&&days(d.examdate)<0);
+  items.sort((a,b)=>{if(!a.examdate&&!b.examdate)return 0;if(!a.examdate)return 1;if(!b.examdate)return -1;return new Date(a.examdate)-new Date(b.examdate);});
+  if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-filter" style="font-size:30px;display:block;margin-bottom:10px"></i>No entries match this filter.</div>';return;}
+  if(activeTab!=='all'){el.innerHTML=`<div class="cards">${items.map(cardHTML).join('')}</div>`;reopenInline();return;}
+  const regUp=items.filter(d=>d.registered&&(!d.examdate||days(d.examdate)>=0));
+  const openReg=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0&&(!d.examdate||days(d.examdate)>=0));
+  const pending=items.filter(d=>!d.examdate&&!d.regdate);
+  const closedNotReg=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)<0&&(!d.examdate||days(d.examdate)>=0));
+  const past=items.filter(d=>d.examdate&&days(d.examdate)<0);
+  let html='';
+  if(regUp.length) html+=`<div class="sec-lbl"><i class="ti ti-circle-check" style="font-size:12px;color:var(--success)"></i> Registered — upcoming (${regUp.length})</div><div class="cards">${regUp.map(cardHTML).join('')}</div>`;
+  if(openReg.length) html+=`<div class="sec-lbl"><i class="ti ti-bell" style="font-size:12px;color:var(--accent)"></i> Registration open (${openReg.length})</div><div class="cards">${openReg.map(cardHTML).join('')}</div>`;
+  if(pending.length) html+=`<div class="sec-lbl"><i class="ti ti-clock" style="font-size:12px;color:var(--text3)"></i> Dates pending (${pending.length})</div><div class="cards">${pending.map(cardHTML).join('')}</div>`;
+  if(closedNotReg.length) html+=`<div class="sec-lbl">Reg closed — not registered (${closedNotReg.length})</div><div class="cards">${closedNotReg.map(cardHTML).join('')}</div>`;
+  if(past.length) html+=`<div class="sec-lbl">Past (${past.length})</div><div class="cards">${past.map(cardHTML).join('')}</div>`;
+  el.innerHTML=html||'<div class="empty">Nothing to show.</div>';
+  reopenInline();
+}
+
+function reopenInline(){
+  if(openFormId&&openFormType){
+    const ef=document.getElementById(`ef-${openFormType}-${openFormId}`);
+    if(ef){ef.classList.add('open');setTimeout(()=>{const inp=ef.querySelector('input');if(inp)inp.focus();},30);}
+  }
+}
+
+function renderStats(){
+  const reg=data.filter(d=>d.registered).length;
+  const open=data.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0).length;
+  const soon=data.filter(d=>d.examdate&&days(d.examdate)>=0&&days(d.examdate)<=14).length;
+  const pend=data.filter(d=>!d.examdate&&!d.regdate).length;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="slbl">Total</div><div class="sval" style="color:var(--text)">${data.length}</div></div>
+    <div class="stat"><div class="slbl">Registered</div><div class="sval" style="color:var(--success)">${reg}</div></div>
+    <div class="stat"><div class="slbl">Reg open</div><div class="sval" style="color:var(--accent)">${open}</div></div>
+    <div class="stat"><div class="slbl">Exam soon</div><div class="sval" style="color:var(--danger)">${soon}</div></div>
+    <div class="stat"><div class="slbl">Dates pending</div><div class="sval" style="color:var(--text3)">${pend}</div></div>`;
+}
+
+function setTab(t,el){activeTab=t;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');render();}
+function setSrc(s,el){activeSrc=s;document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));el.classList.add('active');render();}
+function toggleAddForm(){addFormOpen=!addFormOpen;document.getElementById('form-body').classList.toggle('open',addFormOpen);document.getElementById('form-chevron').style.transform=addFormOpen?'rotate(180deg)':'';}
+
+function addEntry(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('Enter the olympiad name.');return;}
+  const item={id:nextId++,name,email:document.getElementById('f-email').value.trim(),regdate:document.getElementById('f-regdate').value,examdate:document.getElementById('f-examdate').value,reglink:document.getElementById('f-reglink').value.trim(),examlink:document.getElementById('f-examlink').value.trim(),roll:document.getElementById('f-roll').value.trim(),registered:false,src:'manual'};
+  data.push(item);recordChange(item,'add');clearForm();render();
+}
+function clearForm(){['f-name','f-regdate','f-examdate','f-reglink','f-examlink','f-roll'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-email').value='advayexam@gmail.com';}
+function markReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=true;recordChange(item,'update');render();}}
+function openInline(id,type){openFormId=(openFormId===id&&openFormType===type)?null:id;openFormType=openFormId?type:null;render();}
+function closeInline(){openFormId=null;openFormType=null;render();}
+function saveDates(id){const item=data.find(d=>d.id===id);if(item){item.regdate=document.getElementById('el-rd-'+id).value;item.examdate=document.getElementById('el-ed-'+id).value;recordChange(item,'update');openFormId=null;openFormType=null;render();}}
+function saveExamLink(id){const item=data.find(d=>d.id===id);if(item){item.examlink=document.getElementById('el-el-'+id).value.trim();recordChange(item,'update');openFormId=null;openFormType=null;render();}}
+function del(id){if(!confirm('Remove this olympiad?'))return;const item=data.find(d=>d.id===id);if(item)recordChange(item,'delete');data=data.filter(d=>d.id!==id);if(openFormId===id){openFormId=null;openFormType=null;}render();}
+
+loadSheet();
+</script>
+</body>
+</html>
