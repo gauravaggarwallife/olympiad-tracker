@@ -377,7 +377,11 @@ async function startAutoUpdate(){
   log.classList.add('show');
 
   const regCount=data.filter(d=>d.registered).length;
-  setUpdateTitle(`<span class="spinner"></span> Checking ${toCheck.length} websites…`,`Your ${regCount} registered olympiad${regCount!==1?'s are':' is'} locked and will NOT be touched`);
+  const BATCH=6; // process 6 at a time to avoid response size issues
+  const batches=[];
+  for(let i=0;i<toCheck.length;i+=BATCH)batches.push(toCheck.slice(i,i+BATCH));
+
+  setUpdateTitle(`<span class="spinner"></span> Checking ${toCheck.length} websites in ${batches.length} batches…`,`Your ${regCount} registered olympiad${regCount!==1?'s are':' is'} locked and will NOT be touched`);
 
   function addLog(msg,type=''){
     const div=document.createElement('div');
@@ -388,10 +392,13 @@ async function startAutoUpdate(){
   }
 
   addLog(`<i class="ti ti-shield-check" style="font-size:12px;color:var(--green)"></i> <strong>${regCount} registered olympiad${regCount!==1?'s':''} locked — completely protected</strong>`,'lock');
-  addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Sending ${toCheck.length} URLs to Claude for web search…`,'');
 
-  const urlList=toCheck.map(d=>`- ID ${d.id}: "${d.name}" → ${d.reglink}`).join('\n');
-  const prompt=`You are checking olympiad competition websites to find registration and exam dates for 2025-2026 season.
+  let totalUpdated=0;
+
+  async function processBatch(batch,batchNum){
+    addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Batch ${batchNum}/${batches.length} — checking ${batch.length} olympiads…`,'');
+    const urlList=batch.map(d=>`- ID ${d.id}: "${d.name}" → ${d.reglink}`).join('\n');
+    const prompt=`You are checking olympiad competition websites to find registration and exam dates for 2025-2026 season.
 
 For each URL below, search the web and find:
 1. Is registration currently OPEN or CLOSED?
@@ -403,48 +410,37 @@ ${urlList}
 
 Today: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}
 
-Return ONLY a valid JSON array, no other text:
-[{"id":1,"regOpen":true,"regdate":"2025-09-15","examdate":"2025-11-19","notes":"brief note"},...]
+Return ONLY a valid JSON array, no markdown, no explanation:
+[{"id":1,"regOpen":true,"regdate":"2025-09-15","examdate":"2025-11-19","notes":"brief note"}]
 
 Rules:
-- Dates must be YYYY-MM-DD format
-- Empty string "" if date not found
-- null for regOpen if status unclear
-- Include ALL IDs in response even if no data found`;
+- Dates MUST be YYYY-MM-DD format
+- Use "" if date not found
+- Use null for regOpen if unclear
+- Include ALL ${batch.length} IDs in response`;
 
-  try{
     const res=await fetch(workerUrl,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({apiKey,messages:[{role:'user',content:prompt}]})
     });
-    if(res.status===401){
-      addLog('<i class="ti ti-alert-triangle" style="font-size:12px"></i> Invalid API key. Go to Settings (⚙️) and update it.','err');
-      setUpdateTitle('<i class="ti ti-x" style="color:var(--red)"></i> Failed — invalid API key','');
-      document.getElementById('btn-auto').disabled=false;
-      return;
-    }
+    if(res.status===401)throw new Error('Invalid API key — go to ⚙️ Settings and enter a valid key');
     if(!res.ok)throw new Error('Worker error: '+res.status+' '+res.statusText);
     const resp=await res.json();
     if(resp.error)throw new Error(resp.error);
-    const textContent=resp.content?.filter(c=>c.type==='text').map(c=>c.text).join('')||'';
-    const match=textContent.match(/\[[\s\S]*\]/);
-    if(!match)throw new Error('Could not parse Claude response — no JSON array found');
+    const textContent=(resp.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
+    const match=textContent.match(/\[[\s\S]*?\]/);
+    if(!match)throw new Error(`Batch ${batchNum}: Claude did not return JSON. Response: ${textContent.slice(0,200)}`);
     const results=JSON.parse(match[0]);
-    let updCount=0;
     results.forEach(r=>{
       const item=data.find(d=>d.id===r.id);
-      if(!item)return;
-      if(item.registered){
-        addLog(`<i class="ti ti-lock" style="font-size:11px;color:var(--green)"></i> <strong>${item.name}</strong> — SKIPPED (registered & protected)`,'lock');
-        return;
-      }
+      if(!item||item.registered)return;
       const changes=[];
-      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changes.push(`reg deadline → ${fmt(r.regdate)}`);}
+      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changes.push(`reg → ${fmt(r.regdate)}`);}
       if(r.examdate&&r.examdate!==item.examdate){item.examdate=r.examdate;changes.push(`exam → ${fmt(r.examdate)}`);}
       if(changes.length){
         item.autoUpdated=new Date().toISOString();
-        updCount++;
+        totalUpdated++;
         addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' · '+r.notes:''}`,'updated');
         setTimeout(()=>{const c=document.getElementById('card-'+item.id);if(c){c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),2500);}},400);
       }else{
@@ -452,10 +448,17 @@ Rules:
         addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${s}${r.notes?' · '+r.notes:''}`,'skip');
       }
     });
-    save();render();
+  }
+
+  try{
+    for(let i=0;i<batches.length;i++){
+      await processBatch(batches[i],i+1);
+      save();render();
+      if(i<batches.length-1)await new Promise(r=>setTimeout(r,1500)); // pause between batches
+    }
     const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     setUpdateTitle(
-      `<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Done — ${updCount} updated · ${t}`,
+      `<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Done — ${totalUpdated} updated · ${t}`,
       `${regCount} registered olympiad${regCount!==1?'s were':' was'} untouched`
     );
   }catch(e){
