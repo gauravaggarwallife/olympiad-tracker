@@ -21,7 +21,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .topbar{background:var(--s1);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
 .logo{font-size:19px;font-weight:700}
 .logo-sub{font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:5px}
-.saved-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.db-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.db-dot.connected{background:var(--green)}
 .topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .btn{border:none;border-radius:var(--radius);padding:8px 15px;font-size:12px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
 .btn:disabled{opacity:.4;cursor:not-allowed}
@@ -31,20 +32,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .btn-ghost:hover{background:var(--s2)}
 .btn-green{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
 .btn-green:hover:not(:disabled){background:rgba(74,222,128,.15)}
-.btn-amber{background:var(--ambg);color:var(--amber);border:1px solid var(--amborder)}
 .btn-sm{padding:6px 11px;font-size:11px}
 .spinner{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 .page{max-width:900px;margin:0 auto;padding:1.25rem 1rem}
 
-/* SETUP BANNER */
-.setup-banner{background:var(--s1);border:1px solid var(--amborder);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;display:none}
-.setup-banner.show{display:block}
-.setup-banner h3{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
-.setup-banner p{font-size:12px;color:var(--text2);margin-bottom:.85rem;line-height:1.6}
-.setup-row{display:flex;gap:8px;flex-wrap:wrap}
-.setup-row input{flex:1;min-width:200px;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
-.setup-row input:focus{border-color:var(--accent)}
+/* SYNC BAR */
+.sync-bar{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:.65rem 1rem;margin-bottom:1rem;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sync-bar.ok{border-color:var(--gborder);color:var(--green)}
+.sync-bar.err{border-color:var(--rborder);color:var(--red)}
 
 /* UPDATE BAR */
 .update-bar{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:none}
@@ -61,6 +57,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .log-line.l-skip{color:var(--text3)}
 .log-line.l-err{color:var(--amber)}
 .log-line.l-lock{color:var(--green)}
+
+/* SETTINGS BANNER */
+.setup-banner{background:var(--s1);border:1px solid var(--amborder);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;display:none}
+.setup-banner.show{display:block}
+.setup-banner h3{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.setup-banner p{font-size:12px;color:var(--text2);margin-bottom:.85rem;line-height:1.6}
+.setup-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.setup-row input{flex:1;min-width:200px;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
+.setup-row input:focus{border-color:var(--accent)}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.25rem}
@@ -103,8 +108,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .crow.dim{color:var(--text3);font-style:italic}
 .ctags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
 .tag{font-size:10px;padding:2px 9px;border-radius:20px;font-weight:600}
-
-/* ACTIONS */
 .card-acts{border-top:1px solid var(--border);margin-top:9px;padding-top:9px;display:flex;gap:5px;flex-wrap:wrap}
 .act{font-size:11px;padding:5px 10px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;line-height:1.3;white-space:nowrap;transition:all .15s}
 .act:hover{background:var(--s2);border-color:var(--border3)}
@@ -118,14 +121,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .act.a-gcal:hover{background:rgba(66,133,244,.1)}
 .act.a-accent{border-color:var(--aborder);color:var(--accent)}
 .act.a-accent:hover{background:var(--abg)}
-
-/* CARD RIGHT */
 .cright{text-align:right;flex-shrink:0;min-width:62px}
 .cd-num{font-size:22px;font-weight:800;line-height:1}
 .cd-lbl{font-size:10px;color:var(--text3);margin-top:2px}
 .cbadge{font-size:10px;padding:3px 9px;border-radius:20px;margin-top:6px;display:inline-block;font-weight:600}
 .del{background:none;border:none;color:var(--text4);cursor:pointer;font-size:15px;padding:4px;flex-shrink:0;margin-top:1px;border-radius:6px;transition:all .15s}
 .del:hover{color:var(--red);background:var(--rbg)}
+.empty{text-align:center;padding:3.5rem 1rem;color:var(--text3)}
+.empty i{font-size:36px;display:block;margin-bottom:12px;opacity:.4}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;align-items:center;justify-content:center;padding:1rem}
@@ -141,13 +144,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .fld input:focus,.fld select:focus{border-color:var(--accent)}
 .fld select option{background:var(--s2)}
 .modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
-.empty{text-align:center;padding:3.5rem 1rem;color:var(--text3)}
-.empty i{font-size:36px;display:block;margin-bottom:12px;opacity:.4}
-
-/* SETTINGS MODAL */
-.settings-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
-.settings-row input{flex:1;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
-.settings-row input:focus{border-color:var(--accent)}
 .settings-note{font-size:11px;color:var(--text3);line-height:1.6;margin-bottom:10px}
 .settings-note a{color:var(--accent)}
 </style>
@@ -157,13 +153,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="topbar">
   <div>
     <div class="logo">🏅 Olympiad Tracker</div>
-    <div class="logo-sub"><span class="saved-dot"></span> All changes save automatically</div>
+    <div class="logo-sub"><span class="db-dot" id="db-dot"></span><span id="db-status">Connecting to Firebase…</span></div>
   </div>
   <div class="topbar-right">
     <button class="btn btn-green btn-sm" id="btn-auto" onclick="startAutoUpdate()">
       <i class="ti ti-refresh-dot" style="font-size:13px"></i> Auto-update dates
     </button>
-    <button class="btn btn-ghost btn-sm" onclick="openSettings()" title="Settings">
+    <button class="btn btn-ghost btn-sm" onclick="openSettings()">
       <i class="ti ti-settings" style="font-size:13px"></i>
     </button>
     <button class="btn btn-accent btn-sm" onclick="openModal()">
@@ -174,18 +170,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="page">
 
-  <!-- SETUP BANNER -->
+  <!-- SETUP BANNER for auto-update -->
   <div class="setup-banner" id="setup-banner">
     <h3><i class="ti ti-settings" style="font-size:14px"></i> Setup required for Auto-update</h3>
-    <p>Enter your <strong>Anthropic API key</strong> and your <strong>Cloudflare Worker URL</strong> below. Both are saved in your browser and never sent anywhere except your own Worker.<br><br>
-    Get API key free at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a> → API Keys.<br>
-    Your Worker URL looks like: <code style="background:var(--s3);padding:2px 6px;border-radius:4px;font-size:11px">https://olympiad-proxy.YOUR-NAME.workers.dev</code></p>
-    <div class="setup-row" style="margin-bottom:8px">
+    <p>Enter your <strong>Anthropic API key</strong> and <strong>Cloudflare Worker URL</strong>. Saved in your browser only.</p>
+    <div class="setup-row">
       <input type="password" id="inp-apikey" placeholder="sk-ant-api03-...">
     </div>
     <div class="setup-row">
-      <input type="text" id="inp-worker" placeholder="https://olympiad-proxy.YOUR-NAME.workers.dev">
-      <button class="btn btn-accent btn-sm" onclick="saveSettings2()"><i class="ti ti-check"></i> Save & run</button>
+      <input type="text" id="inp-worker" placeholder="https://olympiad-proxy.gauravaggarwal1.workers.dev">
+      <button class="btn btn-accent btn-sm" onclick="saveAndRun()"><i class="ti ti-check"></i> Save & run</button>
       <button class="btn btn-ghost btn-sm" onclick="closeBanner()">Cancel</button>
     </div>
   </div>
@@ -218,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <button class="pill" onclick="setSrc('manual',this)">Mine</button>
   </div>
 
-  <div id="list"></div>
+  <div id="list"><div class="empty"><span class="spinner" style="width:24px;height:24px;border-width:3px;margin:0 auto"></span><br>Loading…</div></div>
 </div>
 
 <!-- ADD/EDIT MODAL -->
@@ -268,73 +262,101 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="modal-bg" id="settings-modal">
   <div class="modal">
     <h2><i class="ti ti-settings" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Settings</h2>
-    <p class="settings-note">These are saved in your browser only. Your API key is only sent to your own Cloudflare Worker, never stored anywhere else.</p>
+    <p class="settings-note">Your API key and Worker URL are saved in your browser only — never shared anywhere.</p>
     <div class="fg1">
-      <div class="fld"><label>Anthropic API key</label>
-        <div class="settings-row" style="margin-bottom:0">
-          <input type="password" id="s-apikey" placeholder="sk-ant-api03-...">
-        </div>
-      </div>
+      <div class="fld"><label>Anthropic API key (for Auto-update)</label><input type="password" id="s-apikey" placeholder="sk-ant-api03-..."></div>
     </div>
     <div class="fg1" style="margin-top:10px">
-      <div class="fld"><label>Cloudflare Worker URL</label>
-        <div class="settings-row" style="margin-bottom:0">
-          <input type="text" id="s-worker" placeholder="https://olympiad-proxy.YOUR-NAME.workers.dev">
-        </div>
-      </div>
+      <div class="fld"><label>Cloudflare Worker URL (for Auto-update)</label><input type="text" id="s-worker" placeholder="https://olympiad-proxy.gauravaggarwal1.workers.dev"></div>
     </div>
-    <p class="settings-note" style="margin-top:8px">
-      Get API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys<br>
-      Set up Worker: <a href="https://workers.cloudflare.com" target="_blank">workers.cloudflare.com</a> → paste the worker script I gave you
-    </p>
+    <p class="settings-note" style="margin-top:8px">Get API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys</p>
     <div class="modal-acts">
       <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
-      <button class="btn btn-accent" onclick="saveSettings()"><i class="ti ti-check" style="font-size:13px"></i> Save settings</button>
+      <button class="btn btn-accent" onclick="saveSettings()"><i class="ti ti-check" style="font-size:13px"></i> Save</button>
     </div>
   </div>
 </div>
 
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, getDocs, writeBatch } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBKt2NESM9Q8_AVszEd22HHuGv6ZA_g0cI",
+  authDomain: "olympiad-tracker-594ef.firebaseapp.com",
+  projectId: "olympiad-tracker-594ef",
+  storageBucket: "olympiad-tracker-594ef.firebasestorage.app",
+  messagingSenderId: "668348579838",
+  appId: "1:668348579838:web:ec48bbbf3f34058dc40aaf"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COL = 'olympiads';
+
+window._db = db;
+window._col = COL;
+window._setDoc = setDoc;
+window._deleteDoc = deleteDoc;
+window._doc = doc;
+window._getDocs = getDocs;
+window._collection = collection;
+window._writeBatch = writeBatch;
+
+// Real-time listener — updates UI instantly when anyone changes data
+const unsubscribe = onSnapshot(collection(db, COL), (snapshot) => {
+  window._data = [];
+  snapshot.forEach(d => window._data.push({id: d.id, ...d.data()}));
+  window._data.sort((a,b) => {
+    if(!a.examdate && !b.examdate) return (a.name||'').localeCompare(b.name||'');
+    if(!a.examdate) return 1;
+    if(!b.examdate) return -1;
+    return new Date(a.examdate) - new Date(b.examdate);
+  });
+  document.getElementById('db-dot').classList.add('connected');
+  document.getElementById('db-status').textContent = `Firebase connected · ${window._data.length} olympiads`;
+  if(window._render) window._render();
+}, (error) => {
+  document.getElementById('db-status').textContent = 'Firebase error: ' + error.message;
+  document.getElementById('db-dot').style.background = 'var(--red)';
+});
+
+// Seed data — only runs if database is empty
+async function seedIfEmpty(){
+  const snap = await getDocs(collection(db, COL));
+  if(snap.size > 0) return;
+  document.getElementById('db-status').textContent = 'First run — loading all olympiads to Firebase…';
+  const batch = writeBatch(db);
+  SEED.forEach(item => {
+    const ref = doc(collection(db, COL));
+    batch.set(ref, item);
+  });
+  await batch.commit();
+}
+seedIfEmpty();
+</script>
+
 <script>
-const SK='oly_v2', AK='oly_apikey', WK='oly_worker';
+const AK='oly_apikey', WK='oly_worker';
 const SRC_LABEL={GOA:'GOA',OI:'OI',IOA:'IOA',manual:'mine'};
 const SRC_EMO={GOA:'📐',OI:'🔬',IOA:'🌍',manual:'📝'};
-let data=[],nextId=1,activeTab='all',activeSrc='all';
+window._data=[];
+let activeTab='all', activeSrc='all';
 
-/* ─── STORAGE ─── */
-function save(){try{localStorage.setItem(SK,JSON.stringify(data));}catch(e){}}
-function load(){
-  try{const d=localStorage.getItem(SK);data=d?JSON.parse(d):SEED.map(x=>({...x}));}
-  catch(e){data=SEED.map(x=>({...x}));}
-  nextId=data.length?Math.max(...data.map(x=>x.id))+1:1;
-}
 function getApiKey(){return localStorage.getItem(AK)||'';}
-function getWorker(){return localStorage.getItem(WK)||'';}
+function getWorker(){return localStorage.getItem(WK)||'https://olympiad-proxy.gauravaggarwal1.workers.dev';}
 
-/* ─── SETTINGS ─── */
-function openSettings(){
-  document.getElementById('s-apikey').value=getApiKey();
-  document.getElementById('s-worker').value=getWorker();
-  document.getElementById('settings-modal').classList.add('open');
+/* ─── FIREBASE OPS ─── */
+async function fbSave(item){
+  const id = item.firebaseId || item.id;
+  const ref = window._doc(window._collection(window._db, window._col), String(id));
+  const {firebaseId, ...data} = item;
+  await window._setDoc(ref, data, {merge:true});
 }
-function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
-function saveSettings(){
-  const k=document.getElementById('s-apikey').value.trim();
-  const w=document.getElementById('s-worker').value.trim();
-  if(k)localStorage.setItem(AK,k);
-  if(w)localStorage.setItem(WK,w);
-  closeSettings();
-  alert('Settings saved!');
+async function fbDelete(firebaseId){
+  await window._deleteDoc(window._doc(window._db, window._col, String(firebaseId)));
 }
-function saveSettings2(){
-  const k=document.getElementById('inp-apikey').value.trim();
-  const w=document.getElementById('inp-worker').value.trim();
-  if(!k||!w){alert('Please enter both the API key and Worker URL.');return;}
-  localStorage.setItem(AK,k);
-  localStorage.setItem(WK,w);
-  closeBanner();
-  startAutoUpdate();
-}
-function closeBanner(){document.getElementById('setup-banner').classList.remove('show');}
 
 /* ─── DATE HELPERS ─── */
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
@@ -356,127 +378,6 @@ function waLink(item,type){
   return'https://wa.me/?text='+encodeURIComponent(lines.join('\n'));
 }
 
-/* ─── AUTO UPDATE ─── */
-async function startAutoUpdate(){
-  const apiKey=getApiKey();
-  const workerUrl=getWorker();
-  if(!apiKey||!workerUrl){
-    document.getElementById('inp-apikey').value=apiKey;
-    document.getElementById('inp-worker').value=workerUrl;
-    document.getElementById('setup-banner').classList.add('show');
-    return;
-  }
-  const toCheck=data.filter(d=>!d.registered&&d.reglink);
-  if(!toCheck.length){alert('No unregistered olympiads with registration links to check.');return;}
-
-  document.getElementById('btn-auto').disabled=true;
-  const bar=document.getElementById('update-bar');
-  const log=document.getElementById('update-log');
-  bar.classList.add('show');
-  log.innerHTML='';
-  log.classList.add('show');
-
-  const regCount=data.filter(d=>d.registered).length;
-  const BATCH=6; // process 6 at a time to avoid response size issues
-  const batches=[];
-  for(let i=0;i<toCheck.length;i+=BATCH)batches.push(toCheck.slice(i,i+BATCH));
-
-  setUpdateTitle(`<span class="spinner"></span> Checking ${toCheck.length} websites in ${batches.length} batches…`,`Your ${regCount} registered olympiad${regCount!==1?'s are':' is'} locked and will NOT be touched`);
-
-  function addLog(msg,type=''){
-    const div=document.createElement('div');
-    div.className='log-line'+(type?' l-'+type:'');
-    div.innerHTML=msg;
-    log.appendChild(div);
-    log.scrollTop=log.scrollHeight;
-  }
-
-  addLog(`<i class="ti ti-shield-check" style="font-size:12px;color:var(--green)"></i> <strong>${regCount} registered olympiad${regCount!==1?'s':''} locked — completely protected</strong>`,'lock');
-
-  let totalUpdated=0;
-
-  async function processBatch(batch,batchNum){
-    addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Batch ${batchNum}/${batches.length} — checking ${batch.length} olympiads…`,'');
-    const urlList=batch.map(d=>`- ID ${d.id}: "${d.name}" → ${d.reglink}`).join('\n');
-    const prompt=`You are checking olympiad competition websites to find registration and exam dates for 2025-2026 season.
-
-For each URL below, search the web and find:
-1. Is registration currently OPEN or CLOSED?
-2. What is the registration deadline? (exact date if available)
-3. What is the exam/competition date? (exact date if available)
-
-URLs to check:
-${urlList}
-
-Today: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}
-
-Return ONLY a valid JSON array, no markdown, no explanation:
-[{"id":1,"regOpen":true,"regdate":"2025-09-15","examdate":"2025-11-19","notes":"brief note"}]
-
-Rules:
-- Dates MUST be YYYY-MM-DD format
-- Use "" if date not found
-- Use null for regOpen if unclear
-- Include ALL ${batch.length} IDs in response`;
-
-    const res=await fetch(workerUrl,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({apiKey,messages:[{role:'user',content:prompt}]})
-    });
-    if(res.status===401)throw new Error('Invalid API key — go to ⚙️ Settings and enter a valid key');
-    if(!res.ok)throw new Error('Worker error: '+res.status+' '+res.statusText);
-    const resp=await res.json();
-    if(resp.error)throw new Error(resp.error);
-    const textContent=(resp.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
-    const match=textContent.match(/\[[\s\S]*?\]/);
-    if(!match)throw new Error(`Batch ${batchNum}: Claude did not return JSON. Response: ${textContent.slice(0,200)}`);
-    const results=JSON.parse(match[0]);
-    results.forEach(r=>{
-      const item=data.find(d=>d.id===r.id);
-      if(!item||item.registered)return;
-      const changes=[];
-      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changes.push(`reg → ${fmt(r.regdate)}`);}
-      if(r.examdate&&r.examdate!==item.examdate){item.examdate=r.examdate;changes.push(`exam → ${fmt(r.examdate)}`);}
-      if(changes.length){
-        item.autoUpdated=new Date().toISOString();
-        totalUpdated++;
-        addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' · '+r.notes:''}`,'updated');
-        setTimeout(()=>{const c=document.getElementById('card-'+item.id);if(c){c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),2500);}},400);
-      }else{
-        const s=r.regOpen===true?'Reg open':r.regOpen===false?'Reg closed':'No new info';
-        addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${s}${r.notes?' · '+r.notes:''}`,'skip');
-      }
-    });
-  }
-
-  try{
-    for(let i=0;i<batches.length;i++){
-      await processBatch(batches[i],i+1);
-      save();render();
-      if(i<batches.length-1)await new Promise(r=>setTimeout(r,1500)); // pause between batches
-    }
-    const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-    setUpdateTitle(
-      `<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Done — ${totalUpdated} updated · ${t}`,
-      `${regCount} registered olympiad${regCount!==1?'s were':' was'} untouched`
-    );
-  }catch(e){
-    addLog(`<i class="ti ti-alert-triangle" style="font-size:12px"></i> Error: ${e.message}`,'err');
-    setUpdateTitle('<i class="ti ti-alert-triangle" style="color:var(--amber);font-size:15px"></i> Auto-update failed','Check your Worker URL and API key in Settings ⚙️');
-  }
-  document.getElementById('btn-auto').disabled=false;
-}
-
-function setUpdateTitle(t,s){
-  document.getElementById('update-title').innerHTML=t;
-  document.getElementById('update-sub').textContent=s;
-}
-function closeUpdateBar(){
-  document.getElementById('update-bar').classList.remove('show');
-  document.getElementById('update-log').classList.remove('show');
-}
-
 /* ─── CARD STYLE ─── */
 function cStyle(item){
   if(!item.examdate&&!item.regdate)return'nodates';
@@ -492,6 +393,7 @@ function cStyle(item){
 /* ─── CARD HTML ─── */
 function cardHTML(item){
   const cs=cStyle(item),ed=days(item.examdate),rd=days(item.regdate);
+  const fid=item.firebaseId||item.id;
   const cdTxt=ed===null?'—':ed<0?'Done':ed===0?'Today!':ed+'d';
   const cdColor=ed===null?'var(--text3)':ed<0?'var(--text3)':ed<=14?'var(--red)':'var(--accent)';
   const badge=item.registered
@@ -515,13 +417,13 @@ function cardHTML(item){
     ?`<div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">${fmt(item.examdate)}</strong>${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank">Exam link ↗</a>`:''}</div>`
     :`<div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank" style="font-style:normal">Exam link ↗</a>`:''}</div>`;
   const regBtn=!item.registered
-    ?`<button class="act a-green" onclick="markReg(${item.id})"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>`
-    :`<button class="act" onclick="unmarkReg(${item.id})"><i class="ti ti-circle-x" style="font-size:11px"></i>Unmark</button>`;
+    ?`<button class="act a-green" onclick="markReg('${fid}')"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>`
+    :`<button class="act" onclick="unmarkReg('${fid}')"><i class="ti ti-circle-x" style="font-size:11px"></i>Unmark</button>`;
   const gcR=item.regdate?`<a href="${gcal(item,'reg')}" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a>`:'';
   const gcE=item.examdate?`<a href="${gcal(item,'exam')}" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Exam→Cal</a>`:'';
   const waR=`<a href="${waLink(item,'reg')}" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a>`;
   const waE=`<a href="${waLink(item,'exam')}" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>`;
-  return`<div class="card c-${cs}" id="card-${item.id}">
+  return`<div class="card c-${cs}" id="card-${fid}">
     <div class="ico">${SRC_EMO[item.src]||'🏅'}</div>
     <div class="cbody">
       <div class="cname">${lockIcon}${item.name}<span class="badge-src">${SRC_LABEL[item.src]||item.src}</span></div>
@@ -530,9 +432,9 @@ function cardHTML(item){
       ${tags.length?`<div class="ctags">${tags.join('')}</div>`:''}
       <div class="card-acts">
         ${regBtn}
-        <button class="act a-accent" onclick="editItem(${item.id})"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
+        <button class="act a-accent" onclick="editItem('${fid}')"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
         ${waR}${waE}${gcR}${gcE}
-        <button class="act a-red" onclick="delItem(${item.id})"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
+        <button class="act a-red" onclick="delItem('${fid}')"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
       </div>
     </div>
     <div class="cright">
@@ -544,16 +446,15 @@ function cardHTML(item){
 }
 
 /* ─── RENDER ─── */
-function render(){
+window._render = function render(){
   renderStats();
   const el=document.getElementById('list');
-  let items=[...data];
+  let items=[...window._data];
   if(activeSrc!=='all')items=items.filter(d=>d.src===activeSrc);
   if(activeTab==='reg')items=items.filter(d=>d.registered);
   else if(activeTab==='open')items=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0&&(!d.examdate||days(d.examdate)>=0));
   else if(activeTab==='nodates')items=items.filter(d=>!d.examdate&&!d.regdate);
   else if(activeTab==='past')items=items.filter(d=>d.examdate&&days(d.examdate)<0);
-  items.sort((a,b)=>{if(!a.examdate&&!b.examdate)return 0;if(!a.examdate)return 1;if(!b.examdate)return -1;return new Date(a.examdate)-new Date(b.examdate);});
   if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nothing here.</div>';return;}
   if(activeTab!=='all'){el.innerHTML=`<div class="cards">${items.map(cardHTML).join('')}</div>`;return;}
   const rUp=items.filter(d=>d.registered&&(!d.examdate||days(d.examdate)>=0));
@@ -569,7 +470,9 @@ function render(){
   if(past.length)h+=`<div class="sec"><span class="sdot" style="background:var(--text4)"></span>Past (${past.length})</div><div class="cards">${past.map(cardHTML).join('')}</div>`;
   el.innerHTML=h||'<div class="empty"><i class="ti ti-inbox"></i>Nothing to show.</div>';
 }
+
 function renderStats(){
+  const data=window._data;
   const reg=data.filter(d=>d.registered).length;
   const open=data.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0).length;
   const soon=data.filter(d=>d.examdate&&days(d.examdate)>=0&&days(d.examdate)<=14).length;
@@ -583,8 +486,8 @@ function renderStats(){
 }
 
 /* ─── FILTERS ─── */
-function setTab(t,el){activeTab=t;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('tab-active');});el.classList.add('tab-active');render();}
-function setSrc(s,el){activeSrc=s;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('src-active');});el.classList.add('src-active');render();}
+function setTab(t,el){activeTab=t;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('tab-active');});el.classList.add('tab-active');window._render();}
+function setSrc(s,el){activeSrc=s;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('src-active');});el.classList.add('src-active');window._render();}
 
 /* ─── MODAL ─── */
 function openModal(){
@@ -597,10 +500,10 @@ function openModal(){
   document.getElementById('modal').classList.add('open');
   setTimeout(()=>document.getElementById('m-name').focus(),100);
 }
-function editItem(id){
-  const item=data.find(d=>d.id===id);if(!item)return;
+function editItem(fid){
+  const item=window._data.find(d=>(d.firebaseId||d.id)===fid);if(!item)return;
   document.getElementById('modal-title').textContent='Edit olympiad';
-  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-id').value=fid;
   document.getElementById('m-name').value=item.name||'';
   document.getElementById('m-email').value=item.email||'';
   document.getElementById('m-roll').value=item.roll||'';
@@ -614,65 +517,168 @@ function editItem(id){
   setTimeout(()=>document.getElementById('m-name').focus(),100);
 }
 function closeModal(){document.getElementById('modal').classList.remove('open');}
-function saveModal(){
+async function saveModal(){
   const name=document.getElementById('m-name').value.trim();
   if(!name){alert('Enter the olympiad name.');return;}
   const editId=document.getElementById('edit-id').value;
   const item={name,email:document.getElementById('m-email').value.trim(),roll:document.getElementById('m-roll').value.trim(),regdate:document.getElementById('m-rd').value,examdate:document.getElementById('m-ed').value,reglink:document.getElementById('m-rl').value.trim(),examlink:document.getElementById('m-el').value.trim(),src:document.getElementById('m-src').value,registered:document.getElementById('m-reg').checked};
-  if(editId){const idx=data.findIndex(d=>d.id===parseInt(editId));if(idx!==-1)data[idx]={...data[idx],...item};}
-  else{data.push({id:nextId++,...item});}
-  save();closeModal();render();
+  if(editId){
+    const existing=window._data.find(d=>(d.firebaseId||d.id)===editId);
+    await fbSave({...existing,...item,firebaseId:editId});
+  }else{
+    const ref=window._doc(window._collection(window._db,window._col));
+    await window._setDoc(ref,item);
+  }
+  closeModal();
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.getElementById('settings-modal').addEventListener('click',function(e){if(e.target===this)closeSettings();});
 
 /* ─── CARD ACTIONS ─── */
-function markReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=true;save();render();}}
-function unmarkReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=false;save();render();}}
-function delItem(id){if(!confirm('Delete this olympiad?'))return;data=data.filter(d=>d.id!==id);save();render();}
+async function markReg(fid){
+  const item=window._data.find(d=>(d.firebaseId||d.id)===fid);
+  if(item){await fbSave({...item,registered:true,firebaseId:fid});}
+}
+async function unmarkReg(fid){
+  const item=window._data.find(d=>(d.firebaseId||d.id)===fid);
+  if(item){await fbSave({...item,registered:false,firebaseId:fid});}
+}
+async function delItem(fid){
+  if(!confirm('Delete this olympiad?'))return;
+  await fbDelete(fid);
+}
 
-/* ─── SEED DATA ─── */
+/* ─── SETTINGS ─── */
+function openSettings(){
+  document.getElementById('s-apikey').value=getApiKey();
+  document.getElementById('s-worker').value=getWorker();
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+function saveSettings(){
+  const k=document.getElementById('s-apikey').value.trim();
+  const w=document.getElementById('s-worker').value.trim();
+  if(k)localStorage.setItem(AK,k);
+  if(w)localStorage.setItem(WK,w);
+  closeSettings();
+  alert('Settings saved!');
+}
+function closeBanner(){document.getElementById('setup-banner').classList.remove('show');}
+function saveAndRun(){
+  const k=document.getElementById('inp-apikey').value.trim();
+  const w=document.getElementById('inp-worker').value.trim();
+  if(!k||!w){alert('Enter both API key and Worker URL.');return;}
+  localStorage.setItem(AK,k);localStorage.setItem(WK,w);
+  closeBanner();startAutoUpdate();
+}
+
+/* ─── AUTO UPDATE ─── */
+async function startAutoUpdate(){
+  const apiKey=getApiKey(),workerUrl=getWorker();
+  if(!apiKey||!workerUrl){
+    document.getElementById('inp-apikey').value=apiKey;
+    document.getElementById('inp-worker').value=workerUrl;
+    document.getElementById('setup-banner').classList.add('show');return;
+  }
+  const toCheck=window._data.filter(d=>!d.registered&&d.reglink);
+  if(!toCheck.length){alert('No unregistered olympiads with registration links.');return;}
+  document.getElementById('btn-auto').disabled=true;
+  const bar=document.getElementById('update-bar');
+  const log=document.getElementById('update-log');
+  bar.classList.add('show');log.innerHTML='';log.classList.add('show');
+  const regCount=window._data.filter(d=>d.registered).length;
+  const BATCH=6;
+  const batches=[];
+  for(let i=0;i<toCheck.length;i+=BATCH)batches.push(toCheck.slice(i,i+BATCH));
+  setUT(`<span class="spinner"></span> Checking ${toCheck.length} websites in ${batches.length} batches…`,`Your ${regCount} registered olympiad${regCount!==1?'s are':' is'} locked`);
+  function addLog(msg,type=''){const div=document.createElement('div');div.className='log-line'+(type?' l-'+type:'');div.innerHTML=msg;log.appendChild(div);log.scrollTop=log.scrollHeight;}
+  addLog(`<i class="ti ti-shield-check" style="font-size:12px;color:var(--green)"></i> <strong>${regCount} registered olympiad${regCount!==1?'s':''} — completely protected</strong>`,'lock');
+  let totalUpdated=0;
+  async function processBatch(batch,bn){
+    addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Batch ${bn}/${batches.length} — checking ${batch.length} olympiads…`,'');
+    const urlList=batch.map(d=>`- ID ${d.firebaseId||d.id}: "${d.name}" → ${d.reglink}`).join('\n');
+    const prompt=`Check these olympiad websites for registration and exam dates (2025-2026 season):\n${urlList}\n\nToday: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}\n\nReturn ONLY a JSON array:\n[{"id":"EXACT_ID_FROM_ABOVE","regOpen":true,"regdate":"2025-09-15","examdate":"2025-11-19","notes":"brief"}]\n\nRules: YYYY-MM-DD dates, "" if not found, null for unclear regOpen, include ALL ${batch.length} IDs.`;
+    const res=await fetch(workerUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKey,messages:[{role:'user',content:prompt}]})});
+    if(res.status===401)throw new Error('Invalid API key — update in ⚙️ Settings');
+    if(!res.ok)throw new Error('Worker error '+res.status);
+    const resp=await res.json();
+    if(resp.error)throw new Error(resp.error);
+    const txt=(resp.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
+    const match=txt.match(/\[[\s\S]*?\]/);
+    if(!match)throw new Error(`Batch ${bn}: No JSON in response`);
+    const results=JSON.parse(match[0]);
+    for(const r of results){
+      const item=window._data.find(d=>(d.firebaseId||d.id)===r.id||String(d.firebaseId||d.id)===String(r.id));
+      if(!item||item.registered)continue;
+      const changes=[];
+      const update={...item};
+      if(r.regdate&&r.regdate!==item.regdate){update.regdate=r.regdate;changes.push(`reg → ${fmt(r.regdate)}`);}
+      if(r.examdate&&r.examdate!==item.examdate){update.examdate=r.examdate;changes.push(`exam → ${fmt(r.examdate)}`);}
+      if(changes.length){
+        update.autoUpdated=new Date().toISOString();
+        totalUpdated++;
+        await fbSave({...update,firebaseId:item.firebaseId||item.id});
+        addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' · '+r.notes:''}`,'updated');
+      }else{
+        addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${r.regOpen===true?'Reg open':r.regOpen===false?'Reg closed':'No new info'}${r.notes?' · '+r.notes:''}`,'skip');
+      }
+    }
+  }
+  try{
+    for(let i=0;i<batches.length;i++){
+      await processBatch(batches[i],i+1);
+      if(i<batches.length-1)await new Promise(r=>setTimeout(r,1500));
+    }
+    const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    setUT(`<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Done — ${totalUpdated} updated · ${t}`,`${regCount} registered olympiad${regCount!==1?'s were':' was'} untouched`);
+  }catch(e){
+    addLog(`<i class="ti ti-alert-triangle" style="font-size:12px"></i> Error: ${e.message}`,'err');
+    setUT('<i class="ti ti-alert-triangle" style="color:var(--amber);font-size:15px"></i> Failed','Check Worker URL and API key in ⚙️ Settings');
+  }
+  document.getElementById('btn-auto').disabled=false;
+}
+function setUT(t,s){document.getElementById('update-title').innerHTML=t;document.getElementById('update-sub').textContent=s;}
+function closeUpdateBar(){document.getElementById('update-bar').classList.remove('show');document.getElementById('update-log').classList.remove('show');}
+
 const SEED=[
-  {id:1,name:"Asia International Mathematical Olympiad (AIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/aimo-3-3/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:2,name:"Future Intelligence Student Olympiad (FISO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/fiso/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:3,name:"Asia Mathematics Olympics (AMO) — Japan",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/amo/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:4,name:"Fermat Mathematical Olympiad (FMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/fmo/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:5,name:"Mathematics Master Cup (MMC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/mmc/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:6,name:"Global Junior Math Aptitude Test (GJMAT)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/gjmoc/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:7,name:"Hong Kong International Mathematical Olympiad (HKIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkimo-3/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:8,name:"Siam International Math and Science Olympics (SIMSO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/simso/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:9,name:"World Mathematics Invitational (WMI)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/wmi-2/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:10,name:"Global Junior Math Online Competition (GJMOC) 2025-26",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/product/gjmoc-2025-26/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:11,name:"Hong Kong International Science Olympiad (HKISO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkiso/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:12,name:"Hong Kong International Computational Olympiad (HKICO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkico/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:13,name:"Hua Xia Cup (HXC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hxc/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:14,name:"Thailand International Mathematical Olympiad (TIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/timo-3/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:15,name:"International Singapore Maths Competition (ISMC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/ismc-4/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:16,name:"Philippine International Math & Science Olympics (PIMSO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/pimso/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:17,name:"Southeast Asia Mathematics Olympiad (SEAMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/seamo-2/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:18,name:"TeenEagle",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/teeneagle/",examlink:"",roll:"",registered:false,src:"GOA"},
-  {id:19,name:"American Mathematics Olympiad (AMO) 2026",email:"advayexam@gmail.com",regdate:"",examdate:"2026-10-25",reglink:"https://olympiadindia.in/amo-2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:20,name:"SASMO 2026",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/sasmo2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:21,name:"VANDA Science 2026",email:"advayexam@gmail.com",regdate:"2026-06-10",examdate:"2026-06-28",reglink:"https://olympiadindia.in/vanda2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:22,name:"International Junior Informatics Olympiad (IJIO) 2026",email:"advayexam@gmail.com",regdate:"2026-04-30",examdate:"2026-05-17",reglink:"https://olympiadindia.in/ijio2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:23,name:"Copernicus Mathematics Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-math-olympiad-2025/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:24,name:"Copernicus Physics and Astronomy Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-physics-and-astronomy-olympiad-2024/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:25,name:"Copernicus Natural Science Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-natural-science-olympiad-2024/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:26,name:"IJCO 2026 (Int'l Junior Chemistry Olympiad)",email:"advayexam@gmail.com",regdate:"2026-08-31",examdate:"2026-09-26",reglink:"https://olympiadindia.in/ijco-2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:27,name:"IMOCSEA 2026",email:"advayexam@gmail.com",regdate:"2026-06-10",examdate:"2026-06-21",reglink:"https://olympiadindia.in/imocsea-2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:28,name:"ISOCSEA 2026",email:"advayexam@gmail.com",regdate:"2026-06-30",examdate:"2026-07-19",reglink:"https://olympiadindia.in/isocsea-2026/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:29,name:"International Junior AI Olympiad (IJAIO) 2026",email:"advayexam@gmail.com",regdate:"2026-08-31",examdate:"2026-09-23",reglink:"https://olympiadindia.in/njco-2025/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:30,name:"Singapore Math Challenge",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/singaporemathchallenge/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:31,name:"Singapore Int'l Math Olympiad Challenge (SIMOC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/simoc/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:32,name:"Singapore Math Global Final (SMGF)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/smgf/",examlink:"",roll:"",registered:false,src:"OI"},
-  {id:33,name:"Hippo English Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-20",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/hippo-english-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
-  {id:34,name:"Mathematical Kangaroo Competition",email:"advayexam@gmail.com",regdate:"2026-04-26",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/mathematical-kangaroo-competition",examlink:"",roll:"",registered:false,src:"IOA"},
-  {id:35,name:"CSAR-ISO International Science Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-30",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/csar-iso-international-science-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
-  {id:36,name:"WEB English Olympiad",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://www.internationalolympiadacademy.com/web_english_olympiad.php",examlink:"",roll:"",registered:false,src:"IOA"},
-  {id:37,name:"AMC 8",email:"advayexam@gmail.com",regdate:"2026-03-01",examdate:"2026-11-01",reglink:"https://maa.org/math-competitions/amc-8",examlink:"",roll:"",registered:true,src:"manual"}
+  {name:"Asia International Mathematical Olympiad (AIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/aimo-3-3/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Future Intelligence Student Olympiad (FISO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/fiso/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Asia Mathematics Olympics (AMO) — Japan",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/amo/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Fermat Mathematical Olympiad (FMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/fmo/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Mathematics Master Cup (MMC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/mmc/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Global Junior Math Aptitude Test (GJMAT)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/gjmoc/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Hong Kong International Mathematical Olympiad (HKIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkimo-3/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Siam International Math and Science Olympics (SIMSO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/simso/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"World Mathematics Invitational (WMI)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/wmi-2/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Global Junior Math Online Competition (GJMOC) 2025-26",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/product/gjmoc-2025-26/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Hong Kong International Science Olympiad (HKISO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkiso/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Hong Kong International Computational Olympiad (HKICO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hkico/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Hua Xia Cup (HXC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/hxc/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Thailand International Mathematical Olympiad (TIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/timo-3/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"International Singapore Maths Competition (ISMC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/ismc-4/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Philippine International Math & Science Olympics (PIMSO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/pimso/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"Southeast Asia Mathematics Olympiad (SEAMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/seamo-2/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"TeenEagle",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/teeneagle/",examlink:"",roll:"",registered:false,src:"GOA"},
+  {name:"American Mathematics Olympiad (AMO) 2026",email:"advayexam@gmail.com",regdate:"",examdate:"2026-10-25",reglink:"https://olympiadindia.in/amo-2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"SASMO 2026",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/sasmo2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"VANDA Science 2026",email:"advayexam@gmail.com",regdate:"2026-06-10",examdate:"2026-06-28",reglink:"https://olympiadindia.in/vanda2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"International Junior Informatics Olympiad (IJIO) 2026",email:"advayexam@gmail.com",regdate:"2026-04-30",examdate:"2026-05-17",reglink:"https://olympiadindia.in/ijio2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Copernicus Mathematics Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-math-olympiad-2025/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Copernicus Physics and Astronomy Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-physics-and-astronomy-olympiad-2024/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Copernicus Natural Science Olympiad 2025",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/copernicus-natural-science-olympiad-2024/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"IJCO 2026 (Int'l Junior Chemistry Olympiad)",email:"advayexam@gmail.com",regdate:"2026-08-31",examdate:"2026-09-26",reglink:"https://olympiadindia.in/ijco-2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"IMOCSEA 2026",email:"advayexam@gmail.com",regdate:"2026-06-10",examdate:"2026-06-21",reglink:"https://olympiadindia.in/imocsea-2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"ISOCSEA 2026",email:"advayexam@gmail.com",regdate:"2026-06-30",examdate:"2026-07-19",reglink:"https://olympiadindia.in/isocsea-2026/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"International Junior AI Olympiad (IJAIO) 2026",email:"advayexam@gmail.com",regdate:"2026-08-31",examdate:"2026-09-23",reglink:"https://olympiadindia.in/njco-2025/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Singapore Math Challenge",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/singaporemathchallenge/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Singapore Int'l Math Olympiad Challenge (SIMOC)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/simoc/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Singapore Math Global Final (SMGF)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://olympiadindia.in/smgf/",examlink:"",roll:"",registered:false,src:"OI"},
+  {name:"Hippo English Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-20",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/hippo-english-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
+  {name:"Mathematical Kangaroo Competition",email:"advayexam@gmail.com",regdate:"2026-04-26",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/mathematical-kangaroo-competition",examlink:"",roll:"",registered:false,src:"IOA"},
+  {name:"CSAR-ISO International Science Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-30",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/csar-iso-international-science-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
+  {name:"WEB English Olympiad",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://www.internationalolympiadacademy.com/web_english_olympiad.php",examlink:"",roll:"",registered:false,src:"IOA"},
+  {name:"AMC 8",email:"advayexam@gmail.com",regdate:"2026-03-01",examdate:"2026-11-01",reglink:"https://maa.org/math-competitions/amc-8",examlink:"",roll:"",registered:true,src:"manual"}
 ];
-
-load();render();
 </script>
 </body>
 </html>
