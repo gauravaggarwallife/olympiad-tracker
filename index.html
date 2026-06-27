@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///C:/Users/gaura/Downloads/olympiad-tracker.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🏅 Olympiad Tracker</title>
-<link rel="stylesheet" href="./🏅 Olympiad Tracker_files/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css">
 <style>
 :root{
   --bg:#0a0c14;--s1:#12151f;--s2:#1a1d2e;--s3:#22263a;
@@ -18,21 +18,37 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
-/* TOPBAR */
-.topbar{background:var(--s1);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.topbar{background:var(--s1);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
 .logo{font-size:19px;font-weight:700}
-.logo-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.saved-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle}
-/* BUTTONS */
-.btn{border:none;border-radius:var(--radius);padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+.logo-sub{font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:5px}
+.saved-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{border:none;border-radius:var(--radius);padding:8px 15px;font-size:12px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 .btn-accent{background:var(--abg);color:var(--accent);border:1px solid var(--aborder)}
-.btn-accent:hover{background:rgba(108,142,245,.2)}
+.btn-accent:hover:not(:disabled){background:rgba(108,142,245,.2)}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
 .btn-ghost:hover{background:var(--s2)}
-.btn-danger{background:var(--rbg);color:var(--red);border:1px solid var(--rborder)}
-.btn-sm{padding:6px 12px;font-size:12px}
-/* PAGE */
+.btn-green{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
+.btn-green:hover:not(:disabled){background:rgba(74,222,128,.15)}
+.btn-sm{padding:6px 11px;font-size:11px}
+.spinner{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 .page{max-width:900px;margin:0 auto;padding:1.25rem 1rem}
+
+/* AUTO-UPDATE BANNER */
+.update-bar{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.update-bar-info{flex:1;min-width:200px}
+.update-bar-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.update-bar-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.update-log{background:var(--s2);border:1px solid var(--border2);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.85rem;display:none;max-height:200px;overflow-y:auto}
+.update-log.show{display:block}
+.log-line{font-size:11px;color:var(--text2);padding:3px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.log-line:last-child{border-bottom:none}
+.log-line.updated{color:var(--green)}
+.log-line.skipped{color:var(--text3)}
+.log-line.error{color:var(--amber)}
+
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.25rem}
 @media(max-width:580px){.stats{grid-template-columns:repeat(3,1fr)}}
@@ -40,41 +56,34 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .stat{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem .9rem;text-align:center}
 .stat-val{font-size:26px;font-weight:800;line-height:1}
 .stat-lbl{font-size:10px;color:var(--text3);margin-top:4px;letter-spacing:.04em;text-transform:uppercase}
-/* ADD FORM */
-.add-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem}
-.add-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
-.add-body{display:none;margin-top:1rem}
-.add-body.open{display:block}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-@media(max-width:500px){.fg2{grid-template-columns:1fr}}
-.fg1{margin-bottom:10px}
-.fld label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px}
-.fld label span{color:var(--text3)}
-.fld input,.fld select{width:100%;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--text);outline:none;transition:border-color .15s}
-.fld input:focus,.fld select:focus{border-color:var(--accent)}
-.fld select option{background:var(--s2)}
-.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.fhint{font-size:11px;color:var(--text3);flex:1;min-width:100px}
+
 /* FILTERS */
 .filter-bar{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
 .pill{font-size:11px;padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap}
 .pill:hover{border-color:var(--border3);color:var(--text)}
-.pill.active{background:var(--abg);color:var(--accent);border-color:var(--aborder);font-weight:600}
+.pill.tab-active{background:var(--abg);color:var(--accent);border-color:var(--aborder);font-weight:600}
+.pill.src-active{background:var(--abg);color:var(--accent);border-color:var(--aborder);font-weight:600}
 .fsep{width:1px;height:18px;background:var(--border2);margin:0 2px;flex-shrink:0}
-/* SECTIONS */
+
+/* SECTION LABELS */
 .sec{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin:1.1rem 0 .55rem;display:flex;align-items:center;gap:6px}
 .sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .cards{display:flex;flex-direction:column;gap:8px;margin-bottom:.75rem}
+
 /* CARDS */
-.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;display:flex;gap:11px;align-items:flex-start}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;display:flex;gap:11px;align-items:flex-start;transition:border-color .2s,background .2s}
 .card.c-reg{border-left:3px solid var(--green);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(74,222,128,.05) 0%,var(--s1) 50%)}
 .card.c-urgent{border-left:3px solid var(--red);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(248,113,113,.05) 0%,var(--s1) 50%)}
 .card.c-warn{border-left:3px solid var(--amber);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(251,191,36,.05) 0%,var(--s1) 50%)}
 .card.c-past{opacity:.4}
 .card.c-nodates{border-left:3px solid var(--border3);border-radius:0 12px 12px 0}
+.card.just-updated{animation:flashGreen 2s ease-out}
+@keyframes flashGreen{0%{background:rgba(74,222,128,.15)}100%{background:inherit}}
 .ico{width:38px;height:38px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;margin-top:1px}
 .cbody{flex:1;min-width:0}
 .cname{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;word-break:break-word}
+.src-badge{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500}
+.auto-badge{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:4px;vertical-align:middle;background:rgba(108,142,245,.1);color:var(--accent);border:1px solid rgba(108,142,245,.25);font-weight:500}
 .crow{font-size:11px;color:var(--text2);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .crow i{font-size:12px;flex-shrink:0}
 .crow a{color:var(--accent)}
@@ -82,6 +91,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .crow.dim{color:var(--text3);font-style:italic}
 .ctags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
 .tag{font-size:10px;padding:2px 9px;border-radius:20px;font-weight:600}
+
 /* ACTIONS */
 .card-acts{border-top:1px solid var(--border);margin-top:9px;padding-top:9px;display:flex;gap:5px;flex-wrap:wrap}
 .act{font-size:11px;padding:5px 10px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;line-height:1.3;white-space:nowrap;transition:all .15s}
@@ -96,32 +106,50 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .act.a-gcal:hover{background:rgba(66,133,244,.1)}
 .act.a-accent{border-color:var(--aborder);color:var(--accent)}
 .act.a-accent:hover{background:var(--abg)}
-/* INLINE EDIT FORM */
+
+/* INLINE FORM */
 .iform{background:var(--s2);border:1px solid var(--border2);border-radius:var(--radius);padding:.85rem;margin-top:9px;display:none}
 .iform.open{display:block}
-.iform-title{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.04em}
-.ifrow{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
-.ifld{flex:1;min-width:130px}
+.fg2i{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:500px){.fg2i{grid-template-columns:1fr}}
 .ifld label{font-size:10px;color:var(--text3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
 .ifld input{width:100%;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);outline:none}
 .ifld input:focus{border-color:var(--accent)}
+.if-acts{display:flex;gap:8px;margin-top:10px}
+
 /* CARD RIGHT */
 .cright{text-align:right;flex-shrink:0;min-width:62px}
 .cd-num{font-size:22px;font-weight:800;line-height:1}
 .cd-lbl{font-size:10px;color:var(--text3);margin-top:2px}
 .cbadge{font-size:10px;padding:3px 9px;border-radius:20px;margin-top:6px;display:inline-block;font-weight:600}
-/* DELETE BTN */
 .del{background:none;border:none;color:var(--text4);cursor:pointer;font-size:15px;padding:4px;flex-shrink:0;margin-top:1px;border-radius:6px;transition:all .15s}
 .del:hover{color:var(--red);background:var(--rbg)}
-/* EMPTY */
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;align-items:center;justify-content:center;padding:1rem}
+.modal-bg.open{display:flex}
+.modal{background:var(--s2);border:1px solid var(--border2);border-radius:16px;padding:1.5rem;width:100%;max-width:460px;max-height:92vh;overflow-y:auto}
+.modal h2{font-size:16px;font-weight:600;margin-bottom:1.25rem}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:480px){.fg2{grid-template-columns:1fr}}
+.fg1{margin-bottom:10px}
+.fld label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px}
+.fld label span{color:var(--text3)}
+.fld input,.fld select{width:100%;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--text);outline:none;transition:border-color .15s}
+.fld input:focus,.fld select:focus{border-color:var(--accent)}
+.fld select option{background:var(--s2)}
+.modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
 .empty{text-align:center;padding:3.5rem 1rem;color:var(--text3)}
 .empty i{font-size:36px;display:block;margin-bottom:12px;opacity:.4}
-/* MODAL */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:1rem}
-.modal-bg.open{display:flex}
-.modal{background:var(--s2);border:1px solid var(--border2);border-radius:16px;padding:1.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
-.modal h2{font-size:16px;font-weight:600;margin-bottom:1.25rem}
-.modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+
+/* API KEY SETUP */
+.api-setup{background:var(--s1);border:1px solid var(--amborder);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;display:none}
+.api-setup.show{display:block}
+.api-setup h3{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.api-setup p{font-size:12px;color:var(--text2);margin-bottom:.75rem;line-height:1.6}
+.api-row{display:flex;gap:8px;align-items:center}
+.api-row input{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
+.api-row input:focus{border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -129,632 +157,67 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="topbar">
   <div>
     <div class="logo">🏅 Olympiad Tracker</div>
-    <div class="logo-sub"><span class="saved-dot"></span>All changes save automatically</div>
+    <div class="logo-sub"><span class="saved-dot"></span> All changes save automatically in this browser</div>
   </div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="btn btn-accent btn-sm" onclick="openModal()"><i class="ti ti-plus" style="font-size:13px"></i> Add olympiad</button>
+  <div class="topbar-right">
+    <button class="btn btn-green btn-sm" id="btn-autoupdate" onclick="startAutoUpdate()">
+      <i class="ti ti-refresh-dot" style="font-size:13px"></i> Auto-update dates
+    </button>
+    <button class="btn btn-accent btn-sm" onclick="openModal()">
+      <i class="ti ti-plus" style="font-size:13px"></i> Add olympiad
+    </button>
   </div>
 </div>
 
 <div class="page">
-  <div class="stats" id="stats">
-    <div class="stat"><div class="stat-val">32</div><div class="stat-lbl">Total</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--green)">0</div><div class="stat-lbl">Registered</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--accent)">0</div><div class="stat-lbl">Reg open</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--red)">1</div><div class="stat-lbl">Exam soon</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--text3)">25</div><div class="stat-lbl">No dates</div></div></div>
 
-  <div class="filter-bar">
-    <button class="pill active" onclick="setTab(&#39;all&#39;,this)">All</button>
-    <button class="pill" onclick="setTab(&#39;reg&#39;,this)"><i class="ti ti-circle-check" style="font-size:11px;vertical-align:-1px;margin-right:2px"></i>Registered</button>
-    <button class="pill" onclick="setTab(&#39;open&#39;,this)">Reg open</button>
-    <button class="pill" onclick="setTab(&#39;nodates&#39;,this)">Dates pending</button>
-    <button class="pill" onclick="setTab(&#39;past&#39;,this)">Past</button>
-    <div class="fsep"></div>
-    <button class="pill active" id="src-all" onclick="setSrc(&#39;all&#39;,this)">All</button>
-    <button class="pill" onclick="setSrc(&#39;GOA&#39;,this)">GOA</button>
-    <button class="pill" onclick="setSrc(&#39;OI&#39;,this)">OI</button>
-    <button class="pill" onclick="setSrc(&#39;IOA&#39;,this)">IOA</button>
-    <button class="pill" onclick="setSrc(&#39;manual&#39;,this)">Mine</button>
+  <!-- API KEY SETUP -->
+  <div class="api-setup" id="api-setup">
+    <h3><i class="ti ti-key" style="font-size:14px"></i> One-time setup needed for Auto-update</h3>
+    <p>Auto-update uses Claude AI to check each olympiad website for registration dates. You need a free Anthropic API key. Get one at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a> → API Keys → Create Key.</p>
+    <div class="api-row">
+      <input type="password" id="api-key-input" placeholder="sk-ant-api03-...">
+      <button class="btn btn-accent btn-sm" onclick="saveApiKey()"><i class="ti ti-check"></i> Save key</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeApiSetup()">Cancel</button>
+    </div>
   </div>
 
-  <div id="list"><div class="sec"><span class="sdot" style="background:var(--text3)"></span>Dates pending (25)</div><div class="cards"><div class="card c-nodates" id="card-1">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Asia International Mathematical Olympiad (AIMO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/aimo-3-3/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(1)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(1)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Asia%20International%20Mathematical%20Olympiad%20(AIMO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Faimo-3-3%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Asia%20International%20Mathematical%20Olympiad%20(AIMO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(1)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
+  <!-- AUTO UPDATE LOG -->
+  <div class="update-bar" id="update-bar" style="display:none">
+    <div class="update-bar-info">
+      <div class="update-bar-title" id="update-title">
+        <span class="spinner"></span> Checking websites for registration updates…
       </div>
+      <div class="update-bar-sub" id="update-sub">Only checking olympiads you have NOT registered for</div>
     </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-3">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Asia Mathematics Olympics (AMO) — Japan <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/amo/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(3)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(3)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Asia%20Mathematics%20Olympics%20(AMO)%20%E2%80%94%20Japan*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Famo%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Asia%20Mathematics%20Olympics%20(AMO)%20%E2%80%94%20Japan*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(3)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-4">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Fermat Mathematical Olympiad (FMO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/fmo/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(4)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(4)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Fermat%20Mathematical%20Olympiad%20(FMO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Ffmo%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Fermat%20Mathematical%20Olympiad%20(FMO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(4)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-5">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Mathematics Master Cup (MMC) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/mmc/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(5)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(5)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Mathematics%20Master%20Cup%20(MMC)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fmmc%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Mathematics%20Master%20Cup%20(MMC)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(5)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-6">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Global Junior Math Aptitude Test (GJMAT) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/gjmoc/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(6)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(6)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Global%20Junior%20Math%20Aptitude%20Test%20(GJMAT)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fgjmoc%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Global%20Junior%20Math%20Aptitude%20Test%20(GJMAT)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(6)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-7">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Hong Kong International Mathematical Olympiad (HKIMO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/hkimo-3/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(7)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(7)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Hong%20Kong%20International%20Mathematical%20Olympiad%20(HKIMO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fhkimo-3%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Hong%20Kong%20International%20Mathematical%20Olympiad%20(HKIMO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(7)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-8">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Siam International Math and Science Olympics (SIMSO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/simso/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(8)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(8)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Siam%20International%20Math%20and%20Science%20Olympics%20(SIMSO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fsimso%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Siam%20International%20Math%20and%20Science%20Olympics%20(SIMSO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(8)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-9">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">World Mathematics Invitational (WMI) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/wmi-2/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(9)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(9)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*World%20Mathematics%20Invitational%20(WMI)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fwmi-2%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*World%20Mathematics%20Invitational%20(WMI)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(9)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-10">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Global Junior Math Online Competition (GJMOC) 2025-26 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/product/gjmoc-2025-26/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(10)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(10)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Global%20Junior%20Math%20Online%20Competition%20(GJMOC)%202025-26*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fproduct%2Fgjmoc-2025-26%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Global%20Junior%20Math%20Online%20Competition%20(GJMOC)%202025-26*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(10)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-11">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Hong Kong International Science Olympiad (HKISO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/hkiso/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(11)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(11)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Hong%20Kong%20International%20Science%20Olympiad%20(HKISO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fhkiso%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Hong%20Kong%20International%20Science%20Olympiad%20(HKISO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(11)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-12">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Hong Kong International Computational Olympiad (HKICO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/hkico/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(12)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(12)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Hong%20Kong%20International%20Computational%20Olympiad%20(HKICO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fhkico%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Hong%20Kong%20International%20Computational%20Olympiad%20(HKICO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(12)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-13">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Hua Xia Cup (HXC) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/hxc/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(13)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(13)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Hua%20Xia%20Cup%20(HXC)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fhxc%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Hua%20Xia%20Cup%20(HXC)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(13)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-14">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Thailand International Mathematical Olympiad (TIMO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/timo-3/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(14)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(14)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Thailand%20International%20Mathematical%20Olympiad%20(TIMO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Ftimo-3%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Thailand%20International%20Mathematical%20Olympiad%20(TIMO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(14)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-15">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">International Singapore Maths Competition (ISMC) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/ismc-4/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(15)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(15)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*International%20Singapore%20Maths%20Competition%20(ISMC)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fismc-4%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*International%20Singapore%20Maths%20Competition%20(ISMC)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(15)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-16">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Philippine International Math &amp; Science Olympics (PIMSO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/pimso/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(16)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(16)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Philippine%20International%20Math%20%26%20Science%20Olympics%20(PIMSO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fpimso%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Philippine%20International%20Math%20%26%20Science%20Olympics%20(PIMSO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(16)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-17">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">Southeast Asia Mathematics Olympiad (SEAMO) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/seamo-2/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(17)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(17)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Southeast%20Asia%20Mathematics%20Olympiad%20(SEAMO)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fseamo-2%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Southeast%20Asia%20Mathematics%20Olympiad%20(SEAMO)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(17)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-18">
-    <div class="ico">📐</div>
-    <div class="cbody">
-      <div class="cname">TeenEagle <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">GOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://globalolympiadsacademy.com/teeneagle/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(18)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(18)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*TeenEagle*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fglobalolympiadsacademy.com%2Fteeneagle%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*TeenEagle*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(18)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-20">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">SASMO 2026 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/sasmo2026/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(20)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(20)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*SASMO%202026*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fsasmo2026%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*SASMO%202026*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(20)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-23">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Copernicus Mathematics Olympiad 2025 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/copernicus-math-olympiad-2025/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(23)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(23)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Copernicus%20Mathematics%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fcopernicus-math-olympiad-2025%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Copernicus%20Mathematics%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(23)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-24">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Copernicus Physics and Astronomy Olympiad 2025 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/copernicus-physics-and-astronomy-olympiad-2024/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(24)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(24)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Copernicus%20Physics%20and%20Astronomy%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fcopernicus-physics-and-astronomy-olympiad-2024%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Copernicus%20Physics%20and%20Astronomy%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(24)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-25">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Copernicus Natural Science Olympiad 2025 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/copernicus-natural-science-olympiad-2024/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(25)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(25)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Copernicus%20Natural%20Science%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fcopernicus-natural-science-olympiad-2024%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Copernicus%20Natural%20Science%20Olympiad%202025*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(25)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-30">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Singapore Math Challenge <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/singaporemathchallenge/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(30)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(30)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Singapore%20Math%20Challenge*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fsingaporemathchallenge%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Singapore%20Math%20Challenge*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(30)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-31">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Singapore Int'l Math Olympiad Challenge (SIMOC) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/simoc/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(31)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(31)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Singapore%20Int%27l%20Math%20Olympiad%20Challenge%20(SIMOC)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fsimoc%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Singapore%20Int%27l%20Math%20Olympiad%20Challenge%20(SIMOC)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(31)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-32">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">Singapore Math Global Final (SMGF) <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://olympiadindia.in/smgf/" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(32)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(32)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Singapore%20Math%20Global%20Final%20(SMGF)*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fsmgf%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Singapore%20Math%20Global%20Final%20(SMGF)*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(32)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div><div class="card c-nodates" id="card-36">
-    <div class="ico">🌍</div>
-    <div class="cbody">
-      <div class="cname">WEB English Olympiad <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">IOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set &nbsp;<a href="https://www.internationalolympiadacademy.com/web_english_olympiad.php" target="_blank" style="font-style:normal">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      <div class="ctags"><span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(36)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(36)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*WEB%20English%20Olympiad*%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Fweb_english_olympiad.php" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*WEB%20English%20Olympiad*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>
-        <button class="act a-red" onclick="delItem(36)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>
-    </div>
-  </div></div><div class="sec"><span class="sdot" style="background:var(--border3)"></span>Reg closed (4)</div><div class="cards"><div class="card c-urgent" id="card-21">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">VANDA Science 2026 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">10 Jun 2026</strong> &nbsp;<a href="https://olympiadindia.in/vanda2026/" target="_blank">Register ↗</a></div><div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">28 Jun 2026</strong></div>
-      <div class="ctags"><span class="tag" style="background:var(--rbg);color:var(--red);border:1px solid var(--rborder)">⚡ Exam soon</span></div>
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(21)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(21)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*VANDA%20Science%202026*%0AReg%20deadline%3A%2010%20Jun%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fvanda2026%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*VANDA%20Science%202026*%0AExam%3A%2028%20Jun%202026%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20VANDA%20Science%202026&amp;dates=20260610/20260611&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fvanda2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Exam%3A%20VANDA%20Science%202026&amp;dates=20260628/20260629&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fvanda2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Exam→Cal</a>
-        <button class="act a-red" onclick="delItem(21)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--red)">1d</div>
-      <div class="cd-lbl">to exam</div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div><div class="card c-" id="card-33">
-    <div class="ico">🌍</div>
-    <div class="cbody">
-      <div class="cname">Hippo English Olympiad <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">IOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">20 Apr 2026</strong> &nbsp;<a href="https://www.internationalolympiadacademy.com/olympiads/hippo-english-olympiad" target="_blank">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(33)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(33)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Hippo%20English%20Olympiad*%0AReg%20deadline%3A%2020%20Apr%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fhippo-english-olympiad" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Hippo%20English%20Olympiad*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20Hippo%20English%20Olympiad&amp;dates=20260420/20260421&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fhippo-english-olympiad" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a>
-        <button class="act a-red" onclick="delItem(33)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div><div class="card c-" id="card-34">
-    <div class="ico">🌍</div>
-    <div class="cbody">
-      <div class="cname">Mathematical Kangaroo Competition <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">IOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">26 Apr 2026</strong> &nbsp;<a href="https://www.internationalolympiadacademy.com/olympiads/mathematical-kangaroo-competition" target="_blank">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(34)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(34)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*Mathematical%20Kangaroo%20Competition*%0AReg%20deadline%3A%2026%20Apr%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fmathematical-kangaroo-competition" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*Mathematical%20Kangaroo%20Competition*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20Mathematical%20Kangaroo%20Competition&amp;dates=20260426/20260427&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fmathematical-kangaroo-competition" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a>
-        <button class="act a-red" onclick="delItem(34)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div><div class="card c-" id="card-35">
-    <div class="ico">🌍</div>
-    <div class="cbody">
-      <div class="cname">CSAR-ISO International Science Olympiad <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">IOA</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">30 Apr 2026</strong> &nbsp;<a href="https://www.internationalolympiadacademy.com/olympiads/csar-iso-international-science-olympiad" target="_blank">Register ↗</a></div><div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set</div>
-      
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(35)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(35)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*CSAR-ISO%20International%20Science%20Olympiad*%0AReg%20deadline%3A%2030%20Apr%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fcsar-iso-international-science-olympiad" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*CSAR-ISO%20International%20Science%20Olympiad*%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20CSAR-ISO%20International%20Science%20Olympiad&amp;dates=20260430/20260501&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Fwww.internationalolympiadacademy.com%2Folympiads%2Fcsar-iso-international-science-olympiad" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a>
-        <button class="act a-red" onclick="delItem(35)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">—</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div></div><div class="sec"><span class="sdot" style="background:var(--text4)"></span>Past (2)</div><div class="cards"><div class="card c-past" id="card-22">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">International Junior Informatics Olympiad (IJIO) 2026 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">30 Apr 2026</strong> &nbsp;<a href="https://olympiadindia.in/ijio2026/" target="_blank">Register ↗</a></div><div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">17 May 2026</strong></div>
-      
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(22)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(22)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*International%20Junior%20Informatics%20Olympiad%20(IJIO)%202026*%0AReg%20deadline%3A%2030%20Apr%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fijio2026%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*International%20Junior%20Informatics%20Olympiad%20(IJIO)%202026*%0AExam%3A%2017%20May%202026%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20International%20Junior%20Informatics%20Olympiad%20(IJIO)%202026&amp;dates=20260430/20260501&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fijio2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Exam%3A%20International%20Junior%20Informatics%20Olympiad%20(IJIO)%202026&amp;dates=20260517/20260518&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fijio2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Exam→Cal</a>
-        <button class="act a-red" onclick="delItem(22)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">Done</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div><div class="card c-past" id="card-27">
-    <div class="ico">🔬</div>
-    <div class="cbody">
-      <div class="cname">IMOCSEA 2026 <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">OI</span></div>
-      <div class="crow"><i class="ti ti-mail"></i>advayexam@gmail.com</div>
-      <div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">10 Jun 2026</strong> &nbsp;<a href="https://olympiadindia.in/imocsea-2026/" target="_blank">Register ↗</a></div><div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">21 Jun 2026</strong></div>
-      
-      <div class="card-acts">
-        <button class="act a-green" onclick="markReg(27)"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>
-        <button class="act a-accent" onclick="editItem(27)"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
-        <a href="https://wa.me/?text=*IMOCSEA%202026*%0AReg%20deadline%3A%2010%20Jun%202026%0AEmail%3A%20advayexam%40gmail.com%0ARegister%3A%20https%3A%2F%2Folympiadindia.in%2Fimocsea-2026%2F" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a><a href="https://wa.me/?text=*IMOCSEA%202026*%0AExam%3A%2021%20Jun%202026%0AEmail%3A%20advayexam%40gmail.com" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Reg%20deadline%3A%20IMOCSEA%202026&amp;dates=20260610/20260611&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fimocsea-2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Exam%3A%20IMOCSEA%202026&amp;dates=20260621/20260622&amp;details=Email%3A%20advayexam%40gmail.com%0AReg%3A%20https%3A%2F%2Folympiadindia.in%2Fimocsea-2026%2F" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Exam→Cal</a>
-        <button class="act a-red" onclick="delItem(27)"><i class="ti ti-trash" style="font-size:11px"></i>Delete</button>
-      </div>
-    </div>
-    <div class="cright">
-      <div class="cd-num" style="color:var(--text3)">Done</div>
-      <div class="cd-lbl"></div>
-      <span class="cbadge" style="background:var(--s2);color:var(--text3)">Reg closed</span>
-    </div>
-  </div></div></div>
+    <button class="btn btn-ghost btn-sm" onclick="closeUpdateBar()">Dismiss</button>
+    <div class="update-log" id="update-log"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="filter-bar">
+    <button class="pill tab-active" onclick="setTab('all',this)">All</button>
+    <button class="pill" onclick="setTab('reg',this)"><i class="ti ti-circle-check" style="font-size:11px;vertical-align:-1px;margin-right:2px"></i>Registered</button>
+    <button class="pill" onclick="setTab('open',this)">Reg open</button>
+    <button class="pill" onclick="setTab('nodates',this)">Dates pending</button>
+    <button class="pill" onclick="setTab('past',this)">Past</button>
+    <div class="fsep"></div>
+    <button class="pill src-active" onclick="setSrc('all',this)">All</button>
+    <button class="pill" onclick="setSrc('GOA',this)">GOA</button>
+    <button class="pill" onclick="setSrc('OI',this)">OI</button>
+    <button class="pill" onclick="setSrc('IOA',this)">IOA</button>
+    <button class="pill" onclick="setSrc('manual',this)">Mine</button>
+  </div>
+
+  <div id="list"></div>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- ADD/EDIT MODAL -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <h2 id="modal-title">Add new olympiad</h2>
-    <input type="hidden" id="edit-id" value="">
+    <input type="hidden" id="edit-id">
     <div class="fg2">
       <div class="fld" style="grid-column:1/-1"><label>Olympiad name</label><input type="text" id="m-name" placeholder="e.g. SOF IMO 2025-26"></div>
     </div>
@@ -794,39 +257,42 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <script>
-const STORAGE_KEY='oly_tracker_v1';
+const STORAGE_KEY='oly_v2';
+const API_KEY_STORAGE='oly_api_key';
 const SRC_LABEL={GOA:'GOA',OI:'OI',IOA:'IOA',manual:'mine'};
 const SRC_EMO={GOA:'📐',OI:'🔬',IOA:'🌍',manual:'📝'};
 
-let data=[];
-let nextId=1;
-let activeTab='all';
-let activeSrc='all';
-let oFId=null;
-let oFType=null;
+let data=[], nextId=1, activeTab='all', activeSrc='all', oFId=null, oFType=null;
 
-/* ── STORAGE ── */
+/* ─── STORAGE ─── */
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(e){}}
 function load(){
   try{
     const d=localStorage.getItem(STORAGE_KEY);
-    if(d){data=JSON.parse(d);}
-    else{data=SEED.map(x=>({...x}));}
+    data=d?JSON.parse(d):SEED.map(x=>({...x}));
   }catch(e){data=SEED.map(x=>({...x}));}
   nextId=data.length?Math.max(...data.map(x=>x.id))+1:1;
 }
+function getApiKey(){return localStorage.getItem(API_KEY_STORAGE)||'';}
+function saveApiKey(){
+  const k=document.getElementById('api-key-input').value.trim();
+  if(!k.startsWith('sk-ant')){alert('That does not look like a valid Anthropic API key. It should start with sk-ant-');return;}
+  localStorage.setItem(API_KEY_STORAGE,k);
+  closeApiSetup();
+  startAutoUpdate();
+}
+function closeApiSetup(){document.getElementById('api-setup').classList.remove('show');}
 
-/* ── DATE HELPERS ── */
+/* ─── DATE HELPERS ─── */
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 function days(s){if(!s)return null;const d=new Date(s);d.setHours(0,0,0,0);return Math.round((d-TODAY)/86400000);}
 function fmt(s){if(!s)return'—';return new Date(s).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 function gdt(s){return s?s.replace(/-/g,''):''}
 function nday(s){const d=new Date(s);d.setDate(d.getDate()+1);return d.toISOString().split('T')[0].replace(/-/g,'');}
 
-/* ── EXTERNAL LINKS ── */
+/* ─── EXTERNAL LINKS ─── */
 function gcal(item,type){
-  const isE=type==='exam',dv=isE?item.examdate:item.regdate;
-  if(!dv)return null;
+  const isE=type==='exam',dv=isE?item.examdate:item.regdate;if(!dv)return null;
   const t=encodeURIComponent((isE?'Exam: ':'Reg deadline: ')+item.name);
   const det=encodeURIComponent([item.email?'Email: '+item.email:'',item.roll?'Roll: '+item.roll:'',item.reglink?'Reg: '+item.reglink:'',item.examlink?'Exam link: '+item.examlink:''].filter(Boolean).join('\n'));
   return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&dates=${gdt(dv)}/${nday(dv)}&details=${det}`;
@@ -837,7 +303,136 @@ function waLink(item,type){
   return'https://wa.me/?text='+encodeURIComponent(lines.join('\n'));
 }
 
-/* ── CARD STYLE ── */
+/* ─── AUTO UPDATE ─── */
+async function startAutoUpdate(){
+  const apiKey=getApiKey();
+  if(!apiKey){document.getElementById('api-setup').classList.add('show');return;}
+
+  // Only update NON-registered olympiads that have a reglink
+  const toCheck=data.filter(d=>!d.registered&&d.reglink);
+  if(!toCheck.length){alert('No non-registered olympiads with registration links to check.');return;}
+
+  document.getElementById('btn-autoupdate').disabled=true;
+  const bar=document.getElementById('update-bar');
+  const log=document.getElementById('update-log');
+  bar.style.display='flex';
+  bar.style.flexDirection='column';
+  log.innerHTML='';
+  log.classList.add('show');
+  document.getElementById('update-title').innerHTML='<span class="spinner"></span> Checking websites for registration updates…';
+  document.getElementById('update-sub').textContent=`Checking ${toCheck.length} olympiads — your ${data.filter(d=>d.registered).length} registered ones are untouched`;
+
+  function addLog(msg,type=''){
+    const div=document.createElement('div');
+    div.className='log-line'+(type?' '+type:'');
+    div.innerHTML=msg;
+    log.appendChild(div);
+    log.scrollTop=log.scrollHeight;
+  }
+
+  addLog(`<i class="ti ti-shield-check" style="color:var(--green);font-size:12px"></i> <strong style="color:var(--green)">${data.filter(d=>d.registered).length} registered olympiads are locked — will not be touched</strong>`,'');
+  addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Asking Claude to check ${toCheck.length} website(s)…`,'');
+
+  // Build the prompt
+  const urlList=toCheck.map(d=>`- ID ${d.id}: ${d.name} → ${d.reglink}`).join('\n');
+  const prompt=`You are checking olympiad websites to find registration deadlines and exam dates for the year 2025-2026.
+
+Check each of these olympiad registration pages and find:
+1. Is registration currently OPEN or CLOSED?
+2. Registration deadline date (if shown)
+3. Exam date (if shown)
+
+Olympiads to check:
+${urlList}
+
+Today's date is ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}.
+
+Return a JSON array ONLY, no other text, like this:
+[
+  {
+    "id": 1,
+    "regOpen": true,
+    "regdate": "2025-09-15",
+    "examdate": "2025-11-19",
+    "notes": "brief note on what you found"
+  }
+]
+
+Rules:
+- Use YYYY-MM-DD format for dates
+- If date not found, use "" (empty string)
+- If registration status unclear, set regOpen to null
+- Return all IDs even if no info found
+- Do NOT include any text outside the JSON array`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2000,
+        tools:[{type:'web_search_20250305',name:'web_search'}],
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    if(res.status===401){
+      addLog('<i class="ti ti-alert-triangle" style="font-size:12px"></i> Invalid API key. Click "Auto-update dates" again to re-enter your key.','error');
+      localStorage.removeItem(API_KEY_STORAGE);
+      document.getElementById('btn-autoupdate').disabled=false;
+      return;
+    }
+    if(!res.ok)throw new Error('API error '+res.status);
+
+    const resp=await res.json();
+    const text=resp.content?.filter(c=>c.type==='text').map(c=>c.text).join('');
+    const match=text.match(/\[[\s\S]*\]/);
+    if(!match)throw new Error('Could not parse response');
+    const results=JSON.parse(match[0]);
+
+    let updatedCount=0;
+    results.forEach(r=>{
+      const item=data.find(d=>d.id===r.id);
+      if(!item){return;}
+      if(item.registered){
+        addLog(`<i class="ti ti-lock" style="font-size:11px;color:var(--green)"></i> <strong>${item.name}</strong> — SKIPPED (registered, protected)`,'skipped');
+        return;
+      }
+      let changed=false;
+      const changes=[];
+      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changed=true;changes.push(`reg deadline → ${fmt(r.regdate)}`);}
+      if(r.examdate&&r.examdate!==item.examdate){item.examdate=r.examdate;changed=true;changes.push(`exam date → ${fmt(r.examdate)}`);}
+      if(changed){
+        item.autoUpdated=new Date().toISOString();
+        updatedCount++;
+        addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' ('+r.notes+')':''}`,'updated');
+        // flash the card
+        setTimeout(()=>{const c=document.getElementById('card-'+item.id);if(c)c.classList.add('just-updated');},300);
+      } else {
+        const status=r.regOpen===true?'Reg open':r.regOpen===false?'Reg closed':'No new info';
+        addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${status}${r.notes?' · '+r.notes:''}`,'skipped');
+      }
+    });
+
+    save();render();
+    const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('update-title').innerHTML=`<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Auto-update complete · ${updatedCount} olympiad${updatedCount!==1?'s':''} updated · ${t}`;
+    document.getElementById('update-sub').textContent=`Your ${data.filter(d=>d.registered).length} registered olympiads were untouched`;
+
+  }catch(e){
+    addLog(`<i class="ti ti-alert-triangle" style="font-size:12px"></i> Error: ${e.message}`,'error');
+    document.getElementById('update-title').innerHTML='<i class="ti ti-alert-triangle" style="color:var(--amber);font-size:15px"></i> Auto-update failed';
+  }
+  document.getElementById('btn-autoupdate').disabled=false;
+}
+
+function closeUpdateBar(){
+  document.getElementById('update-bar').style.display='none';
+  document.getElementById('update-log').classList.remove('show');
+}
+
+/* ─── CARD STYLE ─── */
 function cStyle(item){
   if(!item.examdate&&!item.regdate)return'nodates';
   if(item.registered)return'reg';
@@ -849,12 +444,11 @@ function cStyle(item){
   return'';
 }
 
-/* ── CARD HTML ── */
+/* ─── CARD HTML ─── */
 function cardHTML(item){
   const cs=cStyle(item),ed=days(item.examdate),rd=days(item.regdate);
   const cdTxt=ed===null?'—':ed<0?'Done':ed===0?'Today!':ed+'d';
   const cdColor=ed===null?'var(--text3)':ed<0?'var(--text3)':ed<=14?'var(--red)':'var(--accent)';
-
   const badge=item.registered
     ?`<span class="cbadge" style="background:var(--gbg);color:var(--green);border:1px solid var(--gborder)"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px"></i> Registered</span>`
     :rd===null?`<span class="cbadge" style="background:var(--s2);color:var(--text3)">No date</span>`
@@ -862,33 +456,31 @@ function cardHTML(item){
     :rd===0?`<span class="cbadge" style="background:var(--ambg);color:var(--amber);border:1px solid var(--amborder)">Closes today!</span>`
     :rd<=7?`<span class="cbadge" style="background:var(--ambg);color:var(--amber);border:1px solid var(--amborder)">Closes in ${rd}d</span>`
     :`<span class="cbadge" style="background:var(--abg);color:var(--accent);border:1px solid var(--aborder)">Reg open</span>`;
-
   const tags=[];
   if(cs==='urgent'&&ed>=0)tags.push(`<span class="tag" style="background:var(--rbg);color:var(--red);border:1px solid var(--rborder)">⚡ Exam soon</span>`);
   if(cs==='warn')tags.push(`<span class="tag" style="background:var(--ambg);color:var(--amber);border:1px solid var(--amborder)">⏰ Reg closing</span>`);
   if(cs==='nodates')tags.push(`<span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span>`);
   if(item.registered&&item.examlink)tags.push(`<span class="tag" style="background:var(--gbg);color:var(--green);border:1px solid var(--gborder)">✓ Admit card ready</span>`);
-
+  if(item.autoUpdated)tags.push(`<span class="tag" style="background:var(--abg);color:var(--accent);border:1px solid var(--aborder)">🤖 Auto-updated</span>`);
   const regRow=item.regdate
     ?`<div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">${fmt(item.regdate)}</strong>${item.reglink?` &nbsp;<a href="${item.reglink}" target="_blank">Register ↗</a>`:''}</div>`
     :`<div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set${item.reglink?` &nbsp;<a href="${item.reglink}" target="_blank" style="font-style:normal">Register ↗</a>`:''}</div>`;
-
   const examRow=item.examdate
     ?`<div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">${fmt(item.examdate)}</strong>${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank">Exam link ↗</a>`:''}</div>`
     :`<div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank" style="font-style:normal">Exam link ↗</a>`:''}</div>`;
-
+  const lockIcon=item.registered?`<i class="ti ti-lock" style="color:var(--green);font-size:11px" title="Registered — protected from auto-update"></i>`:'';
+  const regBtn=!item.registered
+    ?`<button class="act a-green" onclick="markReg(${item.id})"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>`
+    :`<button class="act" onclick="unmarkReg(${item.id})"><i class="ti ti-circle-x" style="font-size:11px"></i>Unmark</button>`;
   const gcR=item.regdate?`<a href="${gcal(item,'reg')}" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Reg→Cal</a>`:'';
   const gcE=item.examdate?`<a href="${gcal(item,'exam')}" target="_blank" class="act a-gcal"><i class="ti ti-calendar-plus" style="font-size:11px"></i>Exam→Cal</a>`:'';
   const waR=`<a href="${waLink(item,'reg')}" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Reg</a>`;
   const waE=`<a href="${waLink(item,'exam')}" target="_blank" class="act a-wa"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>Exam</a>`;
-  const regBtn=!item.registered?`<button class="act a-green" onclick="markReg(${item.id})"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>`
-    :`<button class="act" onclick="unmarkReg(${item.id})"><i class="ti ti-circle-x" style="font-size:11px"></i>Unmark</button>`;
-
   return`<div class="card c-${cs}" id="card-${item.id}">
     <div class="ico">${SRC_EMO[item.src]||'🏅'}</div>
     <div class="cbody">
-      <div class="cname">${item.name} <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500;vertical-align:middle">${SRC_LABEL[item.src]||item.src}</span></div>
-      ${item.email?`<div class="crow"><i class="ti ti-mail"></i>${item.email}${item.roll?` &nbsp;·&nbsp; <i class="ti ti-id-badge"></i>${item.roll}`:''}</div>`:''}
+      <div class="cname">${lockIcon} ${item.name} <span class="src-badge">${SRC_LABEL[item.src]||item.src}</span></div>
+      ${item.email?`<div class="crow"><i class="ti ti-mail"></i>${item.email}${item.roll?` &nbsp;·&nbsp;<i class="ti ti-id-badge"></i>${item.roll}`:''}</div>`:''}
       ${regRow}${examRow}
       ${tags.length?`<div class="ctags">${tags.join('')}</div>`:''}
       <div class="card-acts">
@@ -906,7 +498,7 @@ function cardHTML(item){
   </div>`;
 }
 
-/* ── RENDER ── */
+/* ─── RENDER ─── */
 function render(){
   renderStats();
   const el=document.getElementById('list');
@@ -917,7 +509,7 @@ function render(){
   else if(activeTab==='nodates')items=items.filter(d=>!d.examdate&&!d.regdate);
   else if(activeTab==='past')items=items.filter(d=>d.examdate&&days(d.examdate)<0);
   items.sort((a,b)=>{if(!a.examdate&&!b.examdate)return 0;if(!a.examdate)return 1;if(!b.examdate)return -1;return new Date(a.examdate)-new Date(b.examdate);});
-  if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nothing here.</div>';return;}
+  if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nothing here yet.</div>';return;}
   if(activeTab!=='all'){el.innerHTML=`<div class="cards">${items.map(cardHTML).join('')}</div>`;return;}
   const rUp=items.filter(d=>d.registered&&(!d.examdate||days(d.examdate)>=0));
   const oReg=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0&&(!d.examdate||days(d.examdate)>=0));
@@ -946,19 +538,19 @@ function renderStats(){
     <div class="stat"><div class="stat-val" style="color:var(--text3)">${pend}</div><div class="stat-lbl">No dates</div></div>`;
 }
 
-/* ── FILTERS ── */
+/* ─── FILTERS ─── */
 function setTab(t,el){
   activeTab=t;
-  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('active');});
-  el.classList.add('active');render();
+  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('tab-active');});
+  el.classList.add('tab-active');render();
 }
 function setSrc(s,el){
   activeSrc=s;
-  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('active');});
-  el.classList.add('active');render();
+  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('src-active');});
+  el.classList.add('src-active');render();
 }
 
-/* ── MODAL ── */
+/* ─── MODAL ─── */
 function openModal(){
   document.getElementById('modal-title').textContent='Add new olympiad';
   document.getElementById('edit-id').value='';
@@ -990,20 +582,15 @@ function saveModal(){
   const name=document.getElementById('m-name').value.trim();
   if(!name){alert('Enter the olympiad name.');return;}
   const editId=document.getElementById('edit-id').value;
-  const item={
-    name,
-    email:document.getElementById('m-email').value.trim(),
-    roll:document.getElementById('m-roll').value.trim(),
-    regdate:document.getElementById('m-rd').value,
-    examdate:document.getElementById('m-ed').value,
-    reglink:document.getElementById('m-rl').value.trim(),
-    examlink:document.getElementById('m-el').value.trim(),
-    src:document.getElementById('m-src').value,
-    registered:document.getElementById('m-reg').checked
-  };
+  const isReg=document.getElementById('m-reg').checked;
+  const item={name,email:document.getElementById('m-email').value.trim(),roll:document.getElementById('m-roll').value.trim(),regdate:document.getElementById('m-rd').value,examdate:document.getElementById('m-ed').value,reglink:document.getElementById('m-rl').value.trim(),examlink:document.getElementById('m-el').value.trim(),src:document.getElementById('m-src').value,registered:isReg};
   if(editId){
     const idx=data.findIndex(d=>d.id===parseInt(editId));
-    if(idx!==-1)data[idx]={...data[idx],...item};
+    if(idx!==-1){
+      // If already registered, preserve that status (don't allow auto-update to overwrite)
+      const existing=data[idx];
+      data[idx]={...existing,...item};
+    }
   }else{
     data.push({id:nextId++,...item});
   }
@@ -1011,12 +598,12 @@ function saveModal(){
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-/* ── CARD ACTIONS ── */
+/* ─── CARD ACTIONS ─── */
 function markReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=true;save();render();}}
 function unmarkReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=false;save();render();}}
 function delItem(id){if(!confirm('Delete this olympiad?'))return;data=data.filter(d=>d.id!==id);save();render();}
 
-/* ── SEED DATA ── */
+/* ─── SEED DATA ─── */
 const SEED=[
   {id:1,name:"Asia International Mathematical Olympiad (AIMO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/aimo-3-3/",examlink:"",roll:"",registered:false,src:"GOA"},
   {id:2,name:"Future Intelligence Student Olympiad (FISO)",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://globalolympiadsacademy.com/fiso/",examlink:"",roll:"",registered:false,src:"GOA"},
@@ -1058,6 +645,5 @@ const SEED=[
 
 load();render();
 </script>
-
-
-</body></html>
+</body>
+</html>
