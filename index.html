@@ -18,7 +18,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
-.topbar{background:var(--s1);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
 .logo{font-size:19px;font-weight:700}
 .logo-sub{font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:5px}
 .saved-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
@@ -31,23 +31,36 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .btn-ghost:hover{background:var(--s2)}
 .btn-green{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
 .btn-green:hover:not(:disabled){background:rgba(74,222,128,.15)}
+.btn-amber{background:var(--ambg);color:var(--amber);border:1px solid var(--amborder)}
 .btn-sm{padding:6px 11px;font-size:11px}
 .spinner{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 .page{max-width:900px;margin:0 auto;padding:1.25rem 1rem}
 
-/* AUTO-UPDATE BANNER */
-.update-bar{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* SETUP BANNER */
+.setup-banner{background:var(--s1);border:1px solid var(--amborder);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;display:none}
+.setup-banner.show{display:block}
+.setup-banner h3{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.setup-banner p{font-size:12px;color:var(--text2);margin-bottom:.85rem;line-height:1.6}
+.setup-row{display:flex;gap:8px;flex-wrap:wrap}
+.setup-row input{flex:1;min-width:200px;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
+.setup-row input:focus{border-color:var(--accent)}
+
+/* UPDATE BAR */
+.update-bar{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:none}
+.update-bar.show{display:block}
+.update-bar-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .update-bar-info{flex:1;min-width:200px}
-.update-bar-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
-.update-bar-sub{font-size:11px;color:var(--text3);margin-top:3px}
-.update-log{background:var(--s2);border:1px solid var(--border2);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.85rem;display:none;max-height:200px;overflow-y:auto}
+.update-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.update-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.update-log{background:var(--s2);border:1px solid var(--border2);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.85rem;max-height:220px;overflow-y:auto;display:none}
 .update-log.show{display:block}
-.log-line{font-size:11px;color:var(--text2);padding:3px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.log-line{font-size:11px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.4}
 .log-line:last-child{border-bottom:none}
-.log-line.updated{color:var(--green)}
-.log-line.skipped{color:var(--text3)}
-.log-line.error{color:var(--amber)}
+.log-line.l-updated{color:var(--green)}
+.log-line.l-skip{color:var(--text3)}
+.log-line.l-err{color:var(--amber)}
+.log-line.l-lock{color:var(--green)}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.25rem}
@@ -65,7 +78,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .pill.src-active{background:var(--abg);color:var(--accent);border-color:var(--aborder);font-weight:600}
 .fsep{width:1px;height:18px;background:var(--border2);margin:0 2px;flex-shrink:0}
 
-/* SECTION LABELS */
+/* SECTIONS */
 .sec{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin:1.1rem 0 .55rem;display:flex;align-items:center;gap:6px}
 .sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .cards{display:flex;flex-direction:column;gap:8px;margin-bottom:.75rem}
@@ -77,13 +90,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .card.c-warn{border-left:3px solid var(--amber);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(251,191,36,.05) 0%,var(--s1) 50%)}
 .card.c-past{opacity:.4}
 .card.c-nodates{border-left:3px solid var(--border3);border-radius:0 12px 12px 0}
-.card.just-updated{animation:flashGreen 2s ease-out}
-@keyframes flashGreen{0%{background:rgba(74,222,128,.15)}100%{background:inherit}}
+.card.flash{animation:flashCard 2.5s ease-out}
+@keyframes flashCard{0%{background:rgba(74,222,128,.18)}100%{background:inherit}}
 .ico{width:38px;height:38px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;margin-top:1px}
 .cbody{flex:1;min-width:0}
 .cname{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;word-break:break-word}
-.src-badge{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500}
-.auto-badge{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:4px;vertical-align:middle;background:rgba(108,142,245,.1);color:var(--accent);border:1px solid rgba(108,142,245,.25);font-weight:500}
+.badge-src{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:5px;vertical-align:middle;background:var(--s3);color:var(--text3);border:1px solid var(--border2);font-weight:500}
 .crow{font-size:11px;color:var(--text2);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .crow i{font-size:12px;flex-shrink:0}
 .crow a{color:var(--accent)}
@@ -106,16 +118,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .act.a-gcal:hover{background:rgba(66,133,244,.1)}
 .act.a-accent{border-color:var(--aborder);color:var(--accent)}
 .act.a-accent:hover{background:var(--abg)}
-
-/* INLINE FORM */
-.iform{background:var(--s2);border:1px solid var(--border2);border-radius:var(--radius);padding:.85rem;margin-top:9px;display:none}
-.iform.open{display:block}
-.fg2i{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-@media(max-width:500px){.fg2i{grid-template-columns:1fr}}
-.ifld label{font-size:10px;color:var(--text3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
-.ifld input{width:100%;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);outline:none}
-.ifld input:focus{border-color:var(--accent)}
-.if-acts{display:flex;gap:8px;margin-top:10px}
 
 /* CARD RIGHT */
 .cright{text-align:right;flex-shrink:0;min-width:62px}
@@ -142,14 +144,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .empty{text-align:center;padding:3.5rem 1rem;color:var(--text3)}
 .empty i{font-size:36px;display:block;margin-bottom:12px;opacity:.4}
 
-/* API KEY SETUP */
-.api-setup{background:var(--s1);border:1px solid var(--amborder);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;display:none}
-.api-setup.show{display:block}
-.api-setup h3{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
-.api-setup p{font-size:12px;color:var(--text2);margin-bottom:.75rem;line-height:1.6}
-.api-row{display:flex;gap:8px;align-items:center}
-.api-row input{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
-.api-row input:focus{border-color:var(--accent)}
+/* SETTINGS MODAL */
+.settings-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.settings-row input{flex:1;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:monospace}
+.settings-row input:focus{border-color:var(--accent)}
+.settings-note{font-size:11px;color:var(--text3);line-height:1.6;margin-bottom:10px}
+.settings-note a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -157,11 +157,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="topbar">
   <div>
     <div class="logo">🏅 Olympiad Tracker</div>
-    <div class="logo-sub"><span class="saved-dot"></span> All changes save automatically in this browser</div>
+    <div class="logo-sub"><span class="saved-dot"></span> All changes save automatically</div>
   </div>
   <div class="topbar-right">
-    <button class="btn btn-green btn-sm" id="btn-autoupdate" onclick="startAutoUpdate()">
+    <button class="btn btn-green btn-sm" id="btn-auto" onclick="startAutoUpdate()">
       <i class="ti ti-refresh-dot" style="font-size:13px"></i> Auto-update dates
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="openSettings()" title="Settings">
+      <i class="ti ti-settings" style="font-size:13px"></i>
     </button>
     <button class="btn btn-accent btn-sm" onclick="openModal()">
       <i class="ti ti-plus" style="font-size:13px"></i> Add olympiad
@@ -171,26 +174,31 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="page">
 
-  <!-- API KEY SETUP -->
-  <div class="api-setup" id="api-setup">
-    <h3><i class="ti ti-key" style="font-size:14px"></i> One-time setup needed for Auto-update</h3>
-    <p>Auto-update uses Claude AI to check each olympiad website for registration dates. You need a free Anthropic API key. Get one at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a> → API Keys → Create Key.</p>
-    <div class="api-row">
-      <input type="password" id="api-key-input" placeholder="sk-ant-api03-...">
-      <button class="btn btn-accent btn-sm" onclick="saveApiKey()"><i class="ti ti-check"></i> Save key</button>
-      <button class="btn btn-ghost btn-sm" onclick="closeApiSetup()">Cancel</button>
+  <!-- SETUP BANNER -->
+  <div class="setup-banner" id="setup-banner">
+    <h3><i class="ti ti-settings" style="font-size:14px"></i> Setup required for Auto-update</h3>
+    <p>Enter your <strong>Anthropic API key</strong> and your <strong>Cloudflare Worker URL</strong> below. Both are saved in your browser and never sent anywhere except your own Worker.<br><br>
+    Get API key free at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a> → API Keys.<br>
+    Your Worker URL looks like: <code style="background:var(--s3);padding:2px 6px;border-radius:4px;font-size:11px">https://olympiad-proxy.YOUR-NAME.workers.dev</code></p>
+    <div class="setup-row" style="margin-bottom:8px">
+      <input type="password" id="inp-apikey" placeholder="sk-ant-api03-...">
+    </div>
+    <div class="setup-row">
+      <input type="text" id="inp-worker" placeholder="https://olympiad-proxy.YOUR-NAME.workers.dev">
+      <button class="btn btn-accent btn-sm" onclick="saveSettings2()"><i class="ti ti-check"></i> Save & run</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeBanner()">Cancel</button>
     </div>
   </div>
 
-  <!-- AUTO UPDATE LOG -->
-  <div class="update-bar" id="update-bar" style="display:none">
-    <div class="update-bar-info">
-      <div class="update-bar-title" id="update-title">
-        <span class="spinner"></span> Checking websites for registration updates…
+  <!-- UPDATE BAR -->
+  <div class="update-bar" id="update-bar">
+    <div class="update-bar-top">
+      <div class="update-bar-info">
+        <div class="update-title" id="update-title"><span class="spinner"></span> Checking websites…</div>
+        <div class="update-sub" id="update-sub">Your registered olympiads are protected</div>
       </div>
-      <div class="update-bar-sub" id="update-sub">Only checking olympiads you have NOT registered for</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeUpdateBar()">Dismiss</button>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="closeUpdateBar()">Dismiss</button>
     <div class="update-log" id="update-log"></div>
   </div>
 
@@ -256,32 +264,77 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settings-modal">
+  <div class="modal">
+    <h2><i class="ti ti-settings" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Settings</h2>
+    <p class="settings-note">These are saved in your browser only. Your API key is only sent to your own Cloudflare Worker, never stored anywhere else.</p>
+    <div class="fg1">
+      <div class="fld"><label>Anthropic API key</label>
+        <div class="settings-row" style="margin-bottom:0">
+          <input type="password" id="s-apikey" placeholder="sk-ant-api03-...">
+        </div>
+      </div>
+    </div>
+    <div class="fg1" style="margin-top:10px">
+      <div class="fld"><label>Cloudflare Worker URL</label>
+        <div class="settings-row" style="margin-bottom:0">
+          <input type="text" id="s-worker" placeholder="https://olympiad-proxy.YOUR-NAME.workers.dev">
+        </div>
+      </div>
+    </div>
+    <p class="settings-note" style="margin-top:8px">
+      Get API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys<br>
+      Set up Worker: <a href="https://workers.cloudflare.com" target="_blank">workers.cloudflare.com</a> → paste the worker script I gave you
+    </p>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
+      <button class="btn btn-accent" onclick="saveSettings()"><i class="ti ti-check" style="font-size:13px"></i> Save settings</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const STORAGE_KEY='oly_v2';
-const API_KEY_STORAGE='oly_api_key';
+const SK='oly_v2', AK='oly_apikey', WK='oly_worker';
 const SRC_LABEL={GOA:'GOA',OI:'OI',IOA:'IOA',manual:'mine'};
 const SRC_EMO={GOA:'📐',OI:'🔬',IOA:'🌍',manual:'📝'};
-
-let data=[], nextId=1, activeTab='all', activeSrc='all', oFId=null, oFType=null;
+let data=[],nextId=1,activeTab='all',activeSrc='all';
 
 /* ─── STORAGE ─── */
-function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(e){}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(data));}catch(e){}}
 function load(){
-  try{
-    const d=localStorage.getItem(STORAGE_KEY);
-    data=d?JSON.parse(d):SEED.map(x=>({...x}));
-  }catch(e){data=SEED.map(x=>({...x}));}
+  try{const d=localStorage.getItem(SK);data=d?JSON.parse(d):SEED.map(x=>({...x}));}
+  catch(e){data=SEED.map(x=>({...x}));}
   nextId=data.length?Math.max(...data.map(x=>x.id))+1:1;
 }
-function getApiKey(){return localStorage.getItem(API_KEY_STORAGE)||'';}
-function saveApiKey(){
-  const k=document.getElementById('api-key-input').value.trim();
-  if(!k.startsWith('sk-ant')){alert('That does not look like a valid Anthropic API key. It should start with sk-ant-');return;}
-  localStorage.setItem(API_KEY_STORAGE,k);
-  closeApiSetup();
+function getApiKey(){return localStorage.getItem(AK)||'';}
+function getWorker(){return localStorage.getItem(WK)||'';}
+
+/* ─── SETTINGS ─── */
+function openSettings(){
+  document.getElementById('s-apikey').value=getApiKey();
+  document.getElementById('s-worker').value=getWorker();
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+function saveSettings(){
+  const k=document.getElementById('s-apikey').value.trim();
+  const w=document.getElementById('s-worker').value.trim();
+  if(k)localStorage.setItem(AK,k);
+  if(w)localStorage.setItem(WK,w);
+  closeSettings();
+  alert('Settings saved!');
+}
+function saveSettings2(){
+  const k=document.getElementById('inp-apikey').value.trim();
+  const w=document.getElementById('inp-worker').value.trim();
+  if(!k||!w){alert('Please enter both the API key and Worker URL.');return;}
+  localStorage.setItem(AK,k);
+  localStorage.setItem(WK,w);
+  closeBanner();
   startAutoUpdate();
 }
-function closeApiSetup(){document.getElementById('api-setup').classList.remove('show');}
+function closeBanner(){document.getElementById('setup-banner').classList.remove('show');}
 
 /* ─── DATE HELPERS ─── */
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
@@ -306,129 +359,118 @@ function waLink(item,type){
 /* ─── AUTO UPDATE ─── */
 async function startAutoUpdate(){
   const apiKey=getApiKey();
-  if(!apiKey){document.getElementById('api-setup').classList.add('show');return;}
-
-  // Only update NON-registered olympiads that have a reglink
+  const workerUrl=getWorker();
+  if(!apiKey||!workerUrl){
+    document.getElementById('inp-apikey').value=apiKey;
+    document.getElementById('inp-worker').value=workerUrl;
+    document.getElementById('setup-banner').classList.add('show');
+    return;
+  }
   const toCheck=data.filter(d=>!d.registered&&d.reglink);
-  if(!toCheck.length){alert('No non-registered olympiads with registration links to check.');return;}
+  if(!toCheck.length){alert('No unregistered olympiads with registration links to check.');return;}
 
-  document.getElementById('btn-autoupdate').disabled=true;
+  document.getElementById('btn-auto').disabled=true;
   const bar=document.getElementById('update-bar');
   const log=document.getElementById('update-log');
-  bar.style.display='flex';
-  bar.style.flexDirection='column';
+  bar.classList.add('show');
   log.innerHTML='';
   log.classList.add('show');
-  document.getElementById('update-title').innerHTML='<span class="spinner"></span> Checking websites for registration updates…';
-  document.getElementById('update-sub').textContent=`Checking ${toCheck.length} olympiads — your ${data.filter(d=>d.registered).length} registered ones are untouched`;
+
+  const regCount=data.filter(d=>d.registered).length;
+  setUpdateTitle(`<span class="spinner"></span> Checking ${toCheck.length} websites…`,`Your ${regCount} registered olympiad${regCount!==1?'s are':' is'} locked and will NOT be touched`);
 
   function addLog(msg,type=''){
     const div=document.createElement('div');
-    div.className='log-line'+(type?' '+type:'');
+    div.className='log-line'+(type?' l-'+type:'');
     div.innerHTML=msg;
     log.appendChild(div);
     log.scrollTop=log.scrollHeight;
   }
 
-  addLog(`<i class="ti ti-shield-check" style="color:var(--green);font-size:12px"></i> <strong style="color:var(--green)">${data.filter(d=>d.registered).length} registered olympiads are locked — will not be touched</strong>`,'');
-  addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Asking Claude to check ${toCheck.length} website(s)…`,'');
+  addLog(`<i class="ti ti-shield-check" style="font-size:12px;color:var(--green)"></i> <strong>${regCount} registered olympiad${regCount!==1?'s':''} locked — completely protected</strong>`,'lock');
+  addLog(`<i class="ti ti-loader" style="font-size:12px"></i> Sending ${toCheck.length} URLs to Claude for web search…`,'');
 
-  // Build the prompt
-  const urlList=toCheck.map(d=>`- ID ${d.id}: ${d.name} → ${d.reglink}`).join('\n');
-  const prompt=`You are checking olympiad websites to find registration deadlines and exam dates for the year 2025-2026.
+  const urlList=toCheck.map(d=>`- ID ${d.id}: "${d.name}" → ${d.reglink}`).join('\n');
+  const prompt=`You are checking olympiad competition websites to find registration and exam dates for 2025-2026 season.
 
-Check each of these olympiad registration pages and find:
+For each URL below, search the web and find:
 1. Is registration currently OPEN or CLOSED?
-2. Registration deadline date (if shown)
-3. Exam date (if shown)
+2. What is the registration deadline? (exact date if available)
+3. What is the exam/competition date? (exact date if available)
 
-Olympiads to check:
+URLs to check:
 ${urlList}
 
-Today's date is ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}.
+Today: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}
 
-Return a JSON array ONLY, no other text, like this:
-[
-  {
-    "id": 1,
-    "regOpen": true,
-    "regdate": "2025-09-15",
-    "examdate": "2025-11-19",
-    "notes": "brief note on what you found"
-  }
-]
+Return ONLY a valid JSON array, no other text:
+[{"id":1,"regOpen":true,"regdate":"2025-09-15","examdate":"2025-11-19","notes":"brief note"},...]
 
 Rules:
-- Use YYYY-MM-DD format for dates
-- If date not found, use "" (empty string)
-- If registration status unclear, set regOpen to null
-- Return all IDs even if no info found
-- Do NOT include any text outside the JSON array`;
+- Dates must be YYYY-MM-DD format
+- Empty string "" if date not found
+- null for regOpen if status unclear
+- Include ALL IDs in response even if no data found`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch(workerUrl,{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:2000,
-        tools:[{type:'web_search_20250305',name:'web_search'}],
-        messages:[{role:'user',content:prompt}]
-      })
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({apiKey,messages:[{role:'user',content:prompt}]})
     });
-
     if(res.status===401){
-      addLog('<i class="ti ti-alert-triangle" style="font-size:12px"></i> Invalid API key. Click "Auto-update dates" again to re-enter your key.','error');
-      localStorage.removeItem(API_KEY_STORAGE);
-      document.getElementById('btn-autoupdate').disabled=false;
+      addLog('<i class="ti ti-alert-triangle" style="font-size:12px"></i> Invalid API key. Go to Settings (⚙️) and update it.','err');
+      setUpdateTitle('<i class="ti ti-x" style="color:var(--red)"></i> Failed — invalid API key','');
+      document.getElementById('btn-auto').disabled=false;
       return;
     }
-    if(!res.ok)throw new Error('API error '+res.status);
-
+    if(!res.ok)throw new Error('Worker error: '+res.status+' '+res.statusText);
     const resp=await res.json();
-    const text=resp.content?.filter(c=>c.type==='text').map(c=>c.text).join('');
-    const match=text.match(/\[[\s\S]*\]/);
-    if(!match)throw new Error('Could not parse response');
+    if(resp.error)throw new Error(resp.error);
+    const textContent=resp.content?.filter(c=>c.type==='text').map(c=>c.text).join('')||'';
+    const match=textContent.match(/\[[\s\S]*\]/);
+    if(!match)throw new Error('Could not parse Claude response — no JSON array found');
     const results=JSON.parse(match[0]);
-
-    let updatedCount=0;
+    let updCount=0;
     results.forEach(r=>{
       const item=data.find(d=>d.id===r.id);
-      if(!item){return;}
+      if(!item)return;
       if(item.registered){
-        addLog(`<i class="ti ti-lock" style="font-size:11px;color:var(--green)"></i> <strong>${item.name}</strong> — SKIPPED (registered, protected)`,'skipped');
+        addLog(`<i class="ti ti-lock" style="font-size:11px;color:var(--green)"></i> <strong>${item.name}</strong> — SKIPPED (registered & protected)`,'lock');
         return;
       }
-      let changed=false;
       const changes=[];
-      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changed=true;changes.push(`reg deadline → ${fmt(r.regdate)}`);}
-      if(r.examdate&&r.examdate!==item.examdate){item.examdate=r.examdate;changed=true;changes.push(`exam date → ${fmt(r.examdate)}`);}
-      if(changed){
+      if(r.regdate&&r.regdate!==item.regdate){item.regdate=r.regdate;changes.push(`reg deadline → ${fmt(r.regdate)}`);}
+      if(r.examdate&&r.examdate!==item.examdate){item.examdate=r.examdate;changes.push(`exam → ${fmt(r.examdate)}`);}
+      if(changes.length){
         item.autoUpdated=new Date().toISOString();
-        updatedCount++;
-        addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' ('+r.notes+')':''}`,'updated');
-        // flash the card
-        setTimeout(()=>{const c=document.getElementById('card-'+item.id);if(c)c.classList.add('just-updated');},300);
-      } else {
-        const status=r.regOpen===true?'Reg open':r.regOpen===false?'Reg closed':'No new info';
-        addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${status}${r.notes?' · '+r.notes:''}`,'skipped');
+        updCount++;
+        addLog(`<i class="ti ti-circle-check" style="font-size:11px"></i> <strong>${item.name}</strong> — ${changes.join(', ')}${r.notes?' · '+r.notes:''}`,'updated');
+        setTimeout(()=>{const c=document.getElementById('card-'+item.id);if(c){c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),2500);}},400);
+      }else{
+        const s=r.regOpen===true?'Reg open':r.regOpen===false?'Reg closed':'No new info';
+        addLog(`<i class="ti ti-minus" style="font-size:11px"></i> ${item.name} — ${s}${r.notes?' · '+r.notes:''}`,'skip');
       }
     });
-
     save();render();
     const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('update-title').innerHTML=`<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Auto-update complete · ${updatedCount} olympiad${updatedCount!==1?'s':''} updated · ${t}`;
-    document.getElementById('update-sub').textContent=`Your ${data.filter(d=>d.registered).length} registered olympiads were untouched`;
-
+    setUpdateTitle(
+      `<i class="ti ti-circle-check" style="color:var(--green);font-size:15px"></i> Done — ${updCount} updated · ${t}`,
+      `${regCount} registered olympiad${regCount!==1?'s were':' was'} untouched`
+    );
   }catch(e){
-    addLog(`<i class="ti ti-alert-triangle" style="font-size:12px"></i> Error: ${e.message}`,'error');
-    document.getElementById('update-title').innerHTML='<i class="ti ti-alert-triangle" style="color:var(--amber);font-size:15px"></i> Auto-update failed';
+    addLog(`<i class="ti ti-alert-triangle" style="font-size:12px"></i> Error: ${e.message}`,'err');
+    setUpdateTitle('<i class="ti ti-alert-triangle" style="color:var(--amber);font-size:15px"></i> Auto-update failed','Check your Worker URL and API key in Settings ⚙️');
   }
-  document.getElementById('btn-autoupdate').disabled=false;
+  document.getElementById('btn-auto').disabled=false;
 }
 
+function setUpdateTitle(t,s){
+  document.getElementById('update-title').innerHTML=t;
+  document.getElementById('update-sub').textContent=s;
+}
 function closeUpdateBar(){
-  document.getElementById('update-bar').style.display='none';
+  document.getElementById('update-bar').classList.remove('show');
   document.getElementById('update-log').classList.remove('show');
 }
 
@@ -462,13 +504,13 @@ function cardHTML(item){
   if(cs==='nodates')tags.push(`<span class="tag" style="background:var(--s2);color:var(--text3);border:1px solid var(--border2)">Dates pending</span>`);
   if(item.registered&&item.examlink)tags.push(`<span class="tag" style="background:var(--gbg);color:var(--green);border:1px solid var(--gborder)">✓ Admit card ready</span>`);
   if(item.autoUpdated)tags.push(`<span class="tag" style="background:var(--abg);color:var(--accent);border:1px solid var(--aborder)">🤖 Auto-updated</span>`);
+  const lockIcon=item.registered?`<i class="ti ti-lock" style="color:var(--green);font-size:11px;margin-right:2px" title="Registered — protected from auto-update"></i>`:'';
   const regRow=item.regdate
     ?`<div class="crow"><i class="ti ti-calendar"></i>Reg: <strong style="color:var(--text)">${fmt(item.regdate)}</strong>${item.reglink?` &nbsp;<a href="${item.reglink}" target="_blank">Register ↗</a>`:''}</div>`
     :`<div class="crow dim"><i class="ti ti-calendar"></i>Reg deadline not set${item.reglink?` &nbsp;<a href="${item.reglink}" target="_blank" style="font-style:normal">Register ↗</a>`:''}</div>`;
   const examRow=item.examdate
     ?`<div class="crow"><i class="ti ti-calendar-event"></i>Exam: <strong style="color:var(--text)">${fmt(item.examdate)}</strong>${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank">Exam link ↗</a>`:''}</div>`
     :`<div class="crow dim"><i class="ti ti-calendar-event"></i>Exam date not set${item.examlink?` &nbsp;<a href="${item.examlink}" target="_blank" style="font-style:normal">Exam link ↗</a>`:''}</div>`;
-  const lockIcon=item.registered?`<i class="ti ti-lock" style="color:var(--green);font-size:11px" title="Registered — protected from auto-update"></i>`:'';
   const regBtn=!item.registered
     ?`<button class="act a-green" onclick="markReg(${item.id})"><i class="ti ti-circle-check" style="font-size:11px"></i>Mark registered</button>`
     :`<button class="act" onclick="unmarkReg(${item.id})"><i class="ti ti-circle-x" style="font-size:11px"></i>Unmark</button>`;
@@ -479,7 +521,7 @@ function cardHTML(item){
   return`<div class="card c-${cs}" id="card-${item.id}">
     <div class="ico">${SRC_EMO[item.src]||'🏅'}</div>
     <div class="cbody">
-      <div class="cname">${lockIcon} ${item.name} <span class="src-badge">${SRC_LABEL[item.src]||item.src}</span></div>
+      <div class="cname">${lockIcon}${item.name}<span class="badge-src">${SRC_LABEL[item.src]||item.src}</span></div>
       ${item.email?`<div class="crow"><i class="ti ti-mail"></i>${item.email}${item.roll?` &nbsp;·&nbsp;<i class="ti ti-id-badge"></i>${item.roll}`:''}</div>`:''}
       ${regRow}${examRow}
       ${tags.length?`<div class="ctags">${tags.join('')}</div>`:''}
@@ -509,7 +551,7 @@ function render(){
   else if(activeTab==='nodates')items=items.filter(d=>!d.examdate&&!d.regdate);
   else if(activeTab==='past')items=items.filter(d=>d.examdate&&days(d.examdate)<0);
   items.sort((a,b)=>{if(!a.examdate&&!b.examdate)return 0;if(!a.examdate)return 1;if(!b.examdate)return -1;return new Date(a.examdate)-new Date(b.examdate);});
-  if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nothing here yet.</div>';return;}
+  if(!items.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nothing here.</div>';return;}
   if(activeTab!=='all'){el.innerHTML=`<div class="cards">${items.map(cardHTML).join('')}</div>`;return;}
   const rUp=items.filter(d=>d.registered&&(!d.examdate||days(d.examdate)>=0));
   const oReg=items.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0&&(!d.examdate||days(d.examdate)>=0));
@@ -524,7 +566,6 @@ function render(){
   if(past.length)h+=`<div class="sec"><span class="sdot" style="background:var(--text4)"></span>Past (${past.length})</div><div class="cards">${past.map(cardHTML).join('')}</div>`;
   el.innerHTML=h||'<div class="empty"><i class="ti ti-inbox"></i>Nothing to show.</div>';
 }
-
 function renderStats(){
   const reg=data.filter(d=>d.registered).length;
   const open=data.filter(d=>!d.registered&&d.regdate&&days(d.regdate)>=0).length;
@@ -539,22 +580,14 @@ function renderStats(){
 }
 
 /* ─── FILTERS ─── */
-function setTab(t,el){
-  activeTab=t;
-  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('tab-active');});
-  el.classList.add('tab-active');render();
-}
-function setSrc(s,el){
-  activeSrc=s;
-  document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('src-active');});
-  el.classList.add('src-active');render();
-}
+function setTab(t,el){activeTab=t;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i<5)b.classList.remove('tab-active');});el.classList.add('tab-active');render();}
+function setSrc(s,el){activeSrc=s;document.querySelectorAll('.filter-bar .pill').forEach((b,i)=>{if(i>=6)b.classList.remove('src-active');});el.classList.add('src-active');render();}
 
 /* ─── MODAL ─── */
 function openModal(){
   document.getElementById('modal-title').textContent='Add new olympiad';
   document.getElementById('edit-id').value='';
-  ['m-name','m-email','m-roll','m-rd','m-ed','m-rl','m-el'].forEach(id=>document.getElementById(id).value='');
+  ['m-name','m-roll','m-rd','m-ed','m-rl','m-el'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('m-email').value='advayexam@gmail.com';
   document.getElementById('m-src').value='manual';
   document.getElementById('m-reg').checked=false;
@@ -582,21 +615,13 @@ function saveModal(){
   const name=document.getElementById('m-name').value.trim();
   if(!name){alert('Enter the olympiad name.');return;}
   const editId=document.getElementById('edit-id').value;
-  const isReg=document.getElementById('m-reg').checked;
-  const item={name,email:document.getElementById('m-email').value.trim(),roll:document.getElementById('m-roll').value.trim(),regdate:document.getElementById('m-rd').value,examdate:document.getElementById('m-ed').value,reglink:document.getElementById('m-rl').value.trim(),examlink:document.getElementById('m-el').value.trim(),src:document.getElementById('m-src').value,registered:isReg};
-  if(editId){
-    const idx=data.findIndex(d=>d.id===parseInt(editId));
-    if(idx!==-1){
-      // If already registered, preserve that status (don't allow auto-update to overwrite)
-      const existing=data[idx];
-      data[idx]={...existing,...item};
-    }
-  }else{
-    data.push({id:nextId++,...item});
-  }
+  const item={name,email:document.getElementById('m-email').value.trim(),roll:document.getElementById('m-roll').value.trim(),regdate:document.getElementById('m-rd').value,examdate:document.getElementById('m-ed').value,reglink:document.getElementById('m-rl').value.trim(),examlink:document.getElementById('m-el').value.trim(),src:document.getElementById('m-src').value,registered:document.getElementById('m-reg').checked};
+  if(editId){const idx=data.findIndex(d=>d.id===parseInt(editId));if(idx!==-1)data[idx]={...data[idx],...item};}
+  else{data.push({id:nextId++,...item});}
   save();closeModal();render();
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('settings-modal').addEventListener('click',function(e){if(e.target===this)closeSettings();});
 
 /* ─── CARD ACTIONS ─── */
 function markReg(id){const item=data.find(d=>d.id===id);if(item){item.registered=true;save();render();}}
@@ -640,7 +665,8 @@ const SEED=[
   {id:33,name:"Hippo English Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-20",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/hippo-english-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
   {id:34,name:"Mathematical Kangaroo Competition",email:"advayexam@gmail.com",regdate:"2026-04-26",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/mathematical-kangaroo-competition",examlink:"",roll:"",registered:false,src:"IOA"},
   {id:35,name:"CSAR-ISO International Science Olympiad",email:"advayexam@gmail.com",regdate:"2026-04-30",examdate:"",reglink:"https://www.internationalolympiadacademy.com/olympiads/csar-iso-international-science-olympiad",examlink:"",roll:"",registered:false,src:"IOA"},
-  {id:36,name:"WEB English Olympiad",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://www.internationalolympiadacademy.com/web_english_olympiad.php",examlink:"",roll:"",registered:false,src:"IOA"}
+  {id:36,name:"WEB English Olympiad",email:"advayexam@gmail.com",regdate:"",examdate:"",reglink:"https://www.internationalolympiadacademy.com/web_english_olympiad.php",examlink:"",roll:"",registered:false,src:"IOA"},
+  {id:37,name:"AMC 8",email:"advayexam@gmail.com",regdate:"2026-03-01",examdate:"2026-11-01",reglink:"https://maa.org/math-competitions/amc-8",examlink:"",roll:"",registered:true,src:"manual"}
 ];
 
 load();render();
